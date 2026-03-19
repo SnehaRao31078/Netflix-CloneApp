@@ -39,17 +39,16 @@ app.post("/signin", async (req, res) => {
     
 
     await resend.emails.send({
-      from: onboarding@resend.dev
-      to: email,
-      subject: "Your OTP Code",
-      html: `<p>Your OTP code is <strong>${otp}</strong>. It expires in 5 minutes.</p>`
-    });
-
+  from: "onboarding@resend.dev", 
+  to: email, 
+  subject: "Your OTP Code",
+  html: `<p>Your OTP code is <strong>${otp}</strong>.</p>`
+});
     res.json({ 
       status: "OTP_SENT", 
       email, 
-      user 
-      otp: otp
+      user ,
+       otp:otp
     });
 
   } catch (err) {

@@ -7,7 +7,7 @@ function Adminlog() {
      const [password, setPassword] = useState("");
 
      const ADMIN_EMAIL="sneha123@gmail.com";
-     const ADMIN_PASS="sneha123#*";
+     const ADMIN_PASS="sneha123*(_#*";
      
      const  navigate=useNavigate();
      const handleSubmit=(e)=>
