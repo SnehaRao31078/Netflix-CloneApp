@@ -39,7 +39,7 @@ app.post("/signin", async (req, res) => {
     
 
     await resend.emails.send({
-      from: process.env.EMAIL_USER,
+      from: onboarding@resend.dev
       to: email,
       subject: "Your OTP Code",
       html: `<p>Your OTP code is <strong>${otp}</strong>. It expires in 5 minutes.</p>`
