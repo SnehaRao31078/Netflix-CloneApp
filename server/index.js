@@ -17,17 +17,13 @@ app.use(express.json());
 app.use(cors());
 app.use("/Images", express.static("public/Images"));
 
-
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-
 let otpStore = {};
-
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -35,25 +31,24 @@ app.post("/signin", async (req, res) => {
     const user = await userModel.findOne({ email, password });
     if (!user) return res.json({ status: "User not found" });
 
-   
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = { otp, expiresAt: Date.now() + 5 * 60 * 1000 };
 
-    
+    console.log("------------------------------");
+    console.log(`OTP for ${email}: ${otp}`);
+    console.log("------------------------------");
+
     await resend.emails.send({
-      from: process.env.EMAIL_USER, 
-      to: email, 
+      from: process.env.EMAIL_USER,
+      to: email,
       subject: "Your OTP Code",
-      html: `<p>Hello,</p><p>Your OTP code is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`
+      html: `<p>Your OTP code is <strong>${otp}</strong>. It expires in 5 minutes.</p>`
     });
 
-    res.json({ status: "OTP Sent" });
-     console.log(`OTP for ${email}: ${otp}`);
-    res.json({
-     status: otp,
-      email,
-      user,
-      otp 
+    res.json({ 
+      status: "OTP_SENT", 
+      email, 
+      user 
     });
 
   } catch (err) {
@@ -62,10 +57,8 @@ app.post("/signin", async (req, res) => {
   }
 });
 
-
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
-
   if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
 
   const stored = otpStore[email];
@@ -96,10 +89,7 @@ const storage = multer.diskStorage({
     cb(null, "./public/Images");
   },
   filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   },
 });
 
@@ -115,7 +105,6 @@ app.post("/products", upload.single("image"), (req, res) => {
     videoLink: req.body.videoLink,
     plan: req.body.plan
   };
-
   productModel.create(movieObject)
     .then((movie) => res.json(movie))
     .catch((err) => res.json(err));
@@ -142,11 +131,7 @@ app.put("/products/:id", upload.single("image"), (req, res) => {
     videoLink: req.body.videoLink,
     plan: req.body.plan
   };
-
-  if (req.file) {
-    updateData.file = req.file.filename;
-  }
-
+  if (req.file) updateData.file = req.file.filename;
   productModel.findByIdAndUpdate(req.params.id, updateData)
     .then(() => res.json("Updated Successfully"))
     .catch((err) => res.json(err));
@@ -155,13 +140,8 @@ app.put("/products/:id", upload.single("image"), (req, res) => {
 app.delete("/products/:id", async (req, res) => {
   try {
     const movie = await productModel.findById(req.params.id);
-
-    if (movie.file) {
-      fs.unlinkSync("./public/Images/" + movie.file);
-    }
-
+    if (movie.file) fs.unlinkSync("./public/Images/" + movie.file);
     await productModel.findByIdAndDelete(req.params.id);
-
     res.json("Deleted Successfully");
   } catch (err) {
     res.json(err);
@@ -216,23 +196,13 @@ app.delete("/banners/:id", async (req, res) => {
 app.post("/plans", async (req, res) => {
   try {
     const data = await planModel.create(req.body);
-
-    res.json({
-      success: true,
-      message: "Payment successful",
-      data
-    });
-
+    res.json({ success: true, message: "Payment successful", data });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Error"
-    });
+    res.status(500).json({ success: false, message: "Error" });
   }
 });
 
 const PORT = process.env.PORT || 3001;
-
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
