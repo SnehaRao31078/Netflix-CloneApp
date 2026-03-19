@@ -12,6 +12,7 @@ const productModel = require("./models/products");
 const heroModel = require("./models/banners");
 const planModel=require("./models/plans");
 const app = express();
+const { Resend } = require("resend");
 
 app.use(express.json());
 app.use(cors());
@@ -23,15 +24,8 @@ app.use("/Images", express.static("public/Images"));
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-let otpStore = {};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
- auth: {
-  user: process.env.EMAIL_USER,
-  pass: process.env.EMAIL_PASS,
-}
-});
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
@@ -41,32 +35,32 @@ app.post("/signin", async (req, res) => {
     if (!user) {
       return res.json({ status: "User not found" });
     }
-    const otp = Math.floor(100000 + Math.random() * 900000);
 
+    const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Netflix OTP Verification",
-      text: `Your OTP for login is: ${otp}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    console.log("OTP Sent:", otp);
-
-    res.json({
-      status: "OTP Sent",
-      email: email,
-      user:user
+    // Use Resend instead of Transporter
+    const { data, error } = await resend.emails.send({
+      from: 'onboarding@resend.dev', // Default for free testing
+      to: email, 
+      subject: 'Netflix OTP Verification',
+      html: `<p>Your OTP for login is: <strong>${otp}</strong></p>`,
     });
-  } catch (error) {
-    console.log("Mail Error:", error);
 
-    res.json({ status: "Error sending OTP" });
+    if (error) {
+      console.error("Resend Error:", error);
+      return res.json({ status: "Error sending OTP" });
+    }
+
+    console.log("OTP Sent via Resend:", otp);
+    res.json({ status: "OTP Sent", email: email, user: user });
+
+  } catch (error) {
+    console.log("Internal Error:", error);
+    res.json({ status: "Server Error" });
   }
 });
+
 
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
