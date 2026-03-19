@@ -5,7 +5,6 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const nodemailer = require("nodemailer");
 
 const userModel = require("./models/user");
 const productModel = require("./models/products");
@@ -24,20 +23,6 @@ mongoose.connect(process.env.MONGODB_URL)
 
 let otpStore = {};
 
-
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // ✅ IMPORTANT
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-
-
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
@@ -51,24 +36,17 @@ app.post("/signin", async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Netflix OTP Verification",
-      html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+    res.json({
+      status: "OTP Sent",
+      email,
+      user,
+      otp
     });
 
-    console.log("OTP Sent:", otp);
-
-    res.json({ status: "OTP Sent", email, user });
-
   } catch (error) {
-    console.log("Mail Error:", error);
-    res.json({ status: "Error sending OTP" });
+    res.json({ status: "Server Error" });
   }
 });
-
-
 
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
@@ -81,7 +59,6 @@ app.post("/verify-otp", (req, res) => {
   }
 });
 
-
 app.post("/signup", async (req, res) => {
   try {
     const user = await userModel.create(req.body);
@@ -90,9 +67,6 @@ app.post("/signup", async (req, res) => {
     res.json(err);
   }
 });
-
-
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -107,9 +81,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-
-
 
 app.post("/products", upload.single("image"), (req, res) => {
   const movieObject = {
@@ -174,9 +145,6 @@ app.delete("/products/:id", async (req, res) => {
   }
 });
 
-
-
-
 app.post("/banners", async (req, res) => {
   try {
     const hero = await heroModel.create(req.body);
@@ -222,9 +190,6 @@ app.delete("/banners/:id", async (req, res) => {
   }
 });
 
-
-
-
 app.post("/plans", async (req, res) => {
   try {
     const data = await planModel.create(req.body);
@@ -242,9 +207,6 @@ app.post("/plans", async (req, res) => {
     });
   }
 });
-
-
-
 
 const PORT = process.env.PORT || 3001;
 

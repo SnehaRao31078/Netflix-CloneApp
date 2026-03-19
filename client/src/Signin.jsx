@@ -11,31 +11,31 @@ function Signin() {
   e.preventDefault();
 
   axios.post(
-  `${import.meta.env.VITE_API_URL}/signin`,
-  { email, password }
-)
-    .then((result) => {
+    `${import.meta.env.VITE_API_URL}/signin`,
+    { email, password }
+  )
+  .then((result) => {
 
-      console.log(result.data);
+    console.log(result.data);
 
-      if (result.data.status === "OTP Sent") {
+    if (result.data.status === "OTP Sent") {
 
-        alert("OTP Sent to your Email");
-        localStorage.setItem("tempUser", JSON.stringify(result.data.user));
+      alert("Your OTP is: " + result.data.otp);
 
-        navigate("/otp", { state: { email: email } });
+      localStorage.setItem("tempUser", JSON.stringify(result.data.user));
 
-      } 
-      else if (result.data.status === "User not found") {
+      navigate("/otp", { state: { email: email } });
 
-        alert("User not found");
+    } 
+    else if (result.data.status === "User not found") {
 
-      }
+      alert("User not found");
 
-    })
-    .catch((err) => console.log(err));
+    }
+
+  })
+  .catch((err) => console.log(err));
 };
-
   return (
     <div className="signin-page">
       <p className="logo-signin">NETFLIX</p>
