@@ -34,9 +34,9 @@ app.post("/signin", async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = { otp, expiresAt: Date.now() + 5 * 60 * 1000 };
 
-    console.log("------------------------------");
+    
     console.log(`OTP for ${email}: ${otp}`);
-    console.log("------------------------------");
+    
 
     await resend.emails.send({
       from: process.env.EMAIL_USER,
@@ -49,6 +49,7 @@ app.post("/signin", async (req, res) => {
       status: "OTP_SENT", 
       email, 
       user 
+      otp: otp
     });
 
   } catch (err) {
