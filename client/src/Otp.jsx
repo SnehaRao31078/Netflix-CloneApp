@@ -1,33 +1,71 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./otp.css"
+function Otp() {
 
-function OTP() {
+  const [otp, setOtp] = useState("");
   const location = useLocation();
-  const { email, otp: autoOtp } = location.state;
-  const [otp, setOtp] = useState(autoOtp || "");
+  const navigate = useNavigate();
 
-  const handleVerify = async () => {
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, { email, otp });
-      alert(res.data.status);
-    } catch (err) {
-      console.log(err);
-    }
+  const email = location.state.email;
+
+  const verifyOtp = (e) => {
+
+    e.preventDefault();
+
+   axios.post(
+  `${import.meta.env.VITE_API_URL}/verify-otp`,
+  {
+    email: email,
+    otp: otp
+  }
+)
+    .then(res => {
+
+      if(res.data.status === "Success"){
+
+        alert("Signin Successful");
+              const user = JSON.parse(localStorage.getItem("tempUser"));
+               localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userPlan", user.plan);
+      localStorage.removeItem("tempUser");
+
+        navigate("/subscribe");
+
+      }else{
+
+        alert("Invalid OTP");
+
+      }
+
+    })
+    .catch(err => console.log(err));
   };
 
   return (
-    <div>
+
+    <div style={{textAlign:"center", marginTop:"150px"}}>
+      <p className="logo-p">NETFLIX</p>
+
       <h2>Enter OTP</h2>
-      <input
-        type="text"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-        placeholder="OTP"
-      />
-      <button onClick={handleVerify}>Verify OTP</button>
+
+      <form onSubmit={verifyOtp}>
+
+        <input className="otp"
+          type="text"
+          placeholder="Enter OTP"
+          onChange={(e)=>setOtp(e.target.value)}
+        />
+
+        <br/><br/>
+
+        <button type="submit" className="otp-btn">Verify OTP</button>
+
+      </form>
+
     </div>
   );
 }
 
-export default OTP;
+export default Otp;
