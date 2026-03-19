@@ -15,7 +15,7 @@ const planModel = require("./models/plans");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/Images", express.static(path.join(__dirname, "public", "Images")));
+app.use("/Images", express.static("public/Images"));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
