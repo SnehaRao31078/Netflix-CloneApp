@@ -6,26 +6,36 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
-const { Resend } = require("resend");
+
 const userModel = require("./models/user");
 const productModel = require("./models/products");
 const heroModel = require("./models/banners");
-const planModel=require("./models/plans");
+const planModel = require("./models/plans");
+
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use("/Images", express.static("public/Images"));
 
-
-
-  mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
 let otpStore = {};
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+
+
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
@@ -39,48 +49,48 @@ app.post("/signin", async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
 
-    
-    const { data, error } = await resend.emails.send({
-      from: 'sneha8484rao@gmail.com', 
-      to: email, 
-      subject: 'Netflix OTP Verification',
-      html: `<p>Your OTP for login is: <strong>${otp}</strong></p>`,
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Netflix OTP Verification",
+      html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
     });
 
-    if (error) {
-      console.error("Resend Error:", error);
-      return res.json({ status: "Error sending OTP" });
-    }
+    console.log("OTP Sent:", otp);
 
-    console.log("OTP Sent via Resend:", otp);
-    res.json({ status: "OTP Sent", email: email, user: user });
+    res.json({ status: "OTP Sent", email, user });
 
   } catch (error) {
-    console.log("Internal Error:", error);
-    res.json({ status: "Server Error" });
+    console.log("Mail Error:", error);
+    res.json({ status: "Error sending OTP" });
   }
 });
+
+
 
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
 
   if (otpStore[email] == otp) {
     delete otpStore[email];
-
     res.json({ status: "Success" });
   } else {
     res.json({ status: "Invalid OTP" });
   }
 });
+
+
 app.post("/signup", async (req, res) => {
   try {
     const user = await userModel.create(req.body);
-
     res.json(user);
   } catch (err) {
     res.json(err);
   }
 });
+
+
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -89,12 +99,15 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname),
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
 
 const upload = multer({ storage: storage });
+
+
+
 
 app.post("/products", upload.single("image"), (req, res) => {
   const movieObject = {
@@ -104,27 +117,26 @@ app.post("/products", upload.single("image"), (req, res) => {
     category: req.body.category,
     file: req.file.filename,
     videoLink: req.body.videoLink,
-    plan:req.body.plan
+    plan: req.body.plan
   };
 
-  productModel
-    .create(movieObject)
+  productModel.create(movieObject)
     .then((movie) => res.json(movie))
     .catch((err) => res.json(err));
 });
+
 app.get("/products", (req, res) => {
-  productModel
-    .find()
+  productModel.find()
     .then((products) => res.json(products))
     .catch((err) => res.json(err));
 });
 
 app.get("/products/:id", (req, res) => {
-  productModel
-    .findById(req.params.id)
+  productModel.findById(req.params.id)
     .then((movie) => res.json(movie))
     .catch((err) => res.json(err));
 });
+
 app.put("/products/:id", upload.single("image"), (req, res) => {
   let updateData = {
     title: req.body.title,
@@ -132,18 +144,18 @@ app.put("/products/:id", upload.single("image"), (req, res) => {
     language: req.body.language,
     category: req.body.category,
     videoLink: req.body.videoLink,
-    plan:req.body.plan
+    plan: req.body.plan
   };
 
   if (req.file) {
     updateData.file = req.file.filename;
   }
 
-  productModel
-    .findByIdAndUpdate(req.params.id, updateData)
+  productModel.findByIdAndUpdate(req.params.id, updateData)
     .then(() => res.json("Updated Successfully"))
     .catch((err) => res.json(err));
 });
+
 app.delete("/products/:id", async (req, res) => {
   try {
     const movie = await productModel.findById(req.params.id);
@@ -159,12 +171,15 @@ app.delete("/products/:id", async (req, res) => {
     res.json(err);
   }
 });
+
+
+
+
 app.post("/banners", async (req, res) => {
   try {
     const hero = await heroModel.create(req.body);
     res.json(hero);
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -174,7 +189,6 @@ app.get("/banners", async (req, res) => {
     const heroes = await heroModel.find();
     res.json(heroes);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to fetch banners" });
   }
 });
@@ -184,7 +198,6 @@ app.get("/banners/:id", async (req, res) => {
     const hero = await heroModel.findById(req.params.id);
     res.json(hero);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to fetch banner" });
   }
 });
@@ -194,7 +207,6 @@ app.put("/banners/:id", async (req, res) => {
     await heroModel.findByIdAndUpdate(req.params.id, req.body);
     res.json({ message: "Updated Successfully" });
   } catch (err) {
-    console.error(err);
     res.status(500).json(err);
   }
 });
@@ -204,10 +216,10 @@ app.delete("/banners/:id", async (req, res) => {
     await heroModel.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted Successfully" });
   } catch (err) {
-    console.error(err);
     res.status(500).json(err);
   }
 });
+
 
 
 
@@ -228,6 +240,7 @@ app.post("/plans", async (req, res) => {
     });
   }
 });
+
 
 
 
