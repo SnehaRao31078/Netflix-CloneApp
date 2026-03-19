@@ -39,9 +39,9 @@ app.post("/signin", async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
 
-    // Use Resend instead of Transporter
+    
     const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Default for free testing
+      from: 'onboarding@resend.dev', 
       to: email, 
       subject: 'Netflix OTP Verification',
       html: `<p>Your OTP for login is: <strong>${otp}</strong></p>`,
