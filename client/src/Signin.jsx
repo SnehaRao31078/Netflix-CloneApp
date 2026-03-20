@@ -4,24 +4,27 @@ import axios from "axios";
 import "./signin.css";
 
 function Signin() {
+  
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     axios.post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
-      .then((result) => {
-        if (result.data.status === "OTP_SENT") {
-          localStorage.setItem("tempUser", JSON.stringify(result.data.user));
+      .then((res) => {
+        if (res.data.status === "OTP_SENT") {
+         
           navigate("/otp", { state: { email: email } });
-        } else if (result.data.status === "User not found") {
-          alert("User not found");
+        } else {
+          alert(res.data.status);
         }
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
     <div className="signin-page">

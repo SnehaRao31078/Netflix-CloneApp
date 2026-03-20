@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./otp.css";
 
 function Otp() {
   const [otp, setOtp] = useState("");
@@ -12,23 +11,24 @@ function Otp() {
   const verifyOtp = (e) => {
     e.preventDefault();
 
-    axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, {
-      email: email,
-      otp: otp
-    })
-    .then(res => {
-      if (res.data.status === "Success") {
-        alert("Signin Successful");
-        const user = JSON.parse(localStorage.getItem("tempUser"));
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userPlan", user.plan);
-        localStorage.removeItem("tempUser");
-        navigate("/subscribe");
-      } else {
-        alert(res.data.status || "Invalid OTP");
-      }
-    })
-    .catch(err => console.log(err));
+    axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, { email, otp })
+      .then(res => {
+        if (res.data.status === "Success") {
+        
+          localStorage.setItem("userEmail", res.data.email);
+          localStorage.setItem("userPlan", res.data.plan || "");
+
+          
+          if (res.data.plan) {
+            navigate("/home"); 
+          } else {
+            navigate("/subscribe"); 
+          }
+        } else {
+          alert(res.data.status);
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   return (
