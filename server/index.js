@@ -2,14 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const { Resend } = require("resend");
 
-
 const userModel = require("./models/user");
+const productModel = require("./models/products");
+const heroModel = require("./models/banners");
+const planModel = require("./models/plans");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/Images", express.static("public/Images"));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -17,9 +23,7 @@ mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-
 let otpStore = {};
-
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -27,61 +31,47 @@ app.post("/signin", async (req, res) => {
     const user = await userModel.findOne({ email, password });
     if (!user) return res.json({ status: "User not found" });
 
-    
     const otp = Math.floor(100000 + Math.random() * 900000);
-    
-    
-    otpStore[email] = { 
-        otp, 
-        expiresAt: Date.now() + 5 * 60 * 1000,
-        userPlan: user.plan 
-    };
+    otpStore[email] = otp;
 
     
+    console.log(`OTP for ${email}: ${otp}`);
+    
+
     await resend.emails.send({
-      from: "onboarding@resend.dev", 
-      to: email, 
-      subject: "Your Netflix Clone OTP",
-      html: `<p>Your login OTP is <strong>${otp}</strong>. It expires in 5 minutes.</p>`
-    });
-
-    
+  from: "onboarding@resend.dev", 
+  to: email, 
+  subject: "Your OTP Code",
+  html: `<p>Your OTP code is <strong>${otp}</strong>.</p>`
+});
     res.json({ 
       status: "OTP_SENT", 
-      email: email 
+      email, 
+      user ,
+       otp:otp
     });
 
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({ status: "Server Error" });
   }
 });
 
-
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
-  const storedData = otpStore[email];
+  if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
 
-  if (!storedData) return res.json({ status: "Invalid Request" });
+  const stored = otpStore[email];
+  
 
-  if (Date.now() > storedData.expiresAt) {
+  if (stored.otp.toString() === otp.toString()) {
     delete otpStore[email];
-    return res.json({ status: "OTP Expired" });
-  }
-
-  if (storedData.otp.toString() === otp.toString()) {
-    const plan = storedData.userPlan;
-    delete otpStore[email]; 
-    
-    return res.json({ 
-        status: "Success", 
-        plan: plan, 
-        email: email 
-    });
+    return res.json({ status: "Success" });
   } else {
     return res.json({ status: "Invalid OTP" });
   }
 });
+
 app.post("/signup", async (req, res) => {
   try {
     const user = await userModel.create(req.body);
