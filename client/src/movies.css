@@ -11,13 +11,13 @@
   min-height: 100vh;
 }
 
-/* ================= HERO SECTION ================= */
+
 
 .hero {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  padding-top: 80px; /* space for navbar */
+  padding-top: 80px; 
 }
 
 .banner-video {
@@ -42,11 +42,11 @@
   z-index: 2;
 }
 
-/* ================= TV TOP BAR ================= */
+
 
 .tv-topbar {
   position: absolute;
-  top: 110px;   /* adjust based on navbar height */
+  top: 110px;  
   left: 60px;
   right: 60px;
   display: flex;
@@ -75,7 +75,7 @@
   cursor: pointer;
 }
 
-/* Right icons */
+
 .view-icons {
   display: flex;
   gap: 10px;
@@ -96,13 +96,13 @@
 }
 
 
-/* ================= HERO CONTENT ================= */
+
 
 .hero-content {
   position: relative;
   z-index: 3;
   max-width: 600px;
-  margin-top: 180px;   /* increased */
+  margin-top: 180px;   
   padding: 0 60px;
 }
 
@@ -153,7 +153,7 @@
   background-color: rgba(109, 109, 110, 0.4);
 }
 
-/* ================= ROWS SECTION ================= */
+
 
 .rows {
   margin-top: 30px;
@@ -203,7 +203,6 @@
   z-index: 2;
 }
 
-/* ================= SCROLL BUTTONS ================= */
 
 .scroll-btn {
   position: absolute;

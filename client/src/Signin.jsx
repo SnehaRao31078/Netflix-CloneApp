@@ -11,19 +11,19 @@ function Signin() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
-      .then((res) => {
-        if (res.data.status === "OTP_SENT") {
-         
-          navigate("/otp", { state: { email: email } });
-        } else {
-          alert(res.data.status);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+ const handleSubmit = (e) => {
+  e.preventDefault();
+
+  axios.post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
+    .then((res) => {
+      if (res.data.status === "SUCCESS") {
+        navigate("/subscribe", { state: { email: email } });
+      } else {
+        alert(res.data.status);
+      }
+    })
+    .catch((err) => console.log(err));
+};
 
 
   return (

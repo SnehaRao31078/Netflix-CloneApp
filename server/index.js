@@ -5,7 +5,7 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { Resend } = require("resend");
+/*const { Resend } = require("resend");*/
 
 const userModel = require("./models/user");
 const productModel = require("./models/products");
@@ -17,13 +17,13 @@ app.use(express.json());
 app.use(cors());
 app.use("/Images", express.static("public/Images"));
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+/*const resend = new Resend(process.env.RESEND_API_KEY);*/
 
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-let otpStore = {};
+//let otpStore = {};
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -31,7 +31,7 @@ app.post("/signin", async (req, res) => {
     const user = await userModel.findOne({ email, password });
     if (!user) return res.json({ status: "User not found" });
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    {/*const otp = Math.floor(100000 + Math.random() * 900000);
     otpStore[email] = otp;
 
     
@@ -50,14 +50,14 @@ app.post("/signin", async (req, res) => {
       user ,
        otp:otp
     });
-
+*/}
   } catch (err) {
     console.log(err);
     res.status(500).json({ status: "Server Error" });
   }
 });
 
-app.post("/verify-otp", (req, res) => {
+/*app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
   if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
 
@@ -70,7 +70,7 @@ app.post("/verify-otp", (req, res) => {
   } else {
     return res.json({ status: "Invalid OTP" });
   }
-});
+});*/
 
 app.post("/signup", async (req, res) => {
   try {
