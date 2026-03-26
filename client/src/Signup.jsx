@@ -23,9 +23,9 @@ function Signup() {
         localStorage.setItem("userEmail", email);
 
         localStorage.setItem("userPlan", "");
-
+alert("Signup successful");
         navigate("/");
-        alert("Signup successful");
+        
       })
       .catch((err) => {
         console.log(err);
