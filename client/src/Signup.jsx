@@ -7,7 +7,7 @@ function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+const  navigate=useNavigate();  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -17,20 +17,16 @@ function Signup() {
         email,
         password,
       })
-      .then((res) => {
-        console.log(res.data);
+      .then((result) => {
+        console.log(result);
+        alert("Signup successful");
 
+        
         localStorage.setItem("userEmail", email);
 
-        localStorage.setItem("userPlan", "");
-alert("Signup successful");
         navigate("/");
-        
       })
-      .catch((err) => {
-        console.log(err);
-        alert("Server not responding");
-      });
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -54,7 +50,9 @@ alert("Signup successful");
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Signup</button>
+<button type="submit">
+    Signup
+          </button>
         </form>
       </div>
     </>
