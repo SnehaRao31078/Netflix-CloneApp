@@ -78,16 +78,9 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/Images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-  },
-});
 
-const upload = multer({ storage: storage });
+
+/*const upload = multer({ storage: storage });
 
 app.post("/products", upload.single("image"), (req, res) => {
   const movieObject = {
@@ -136,6 +129,101 @@ app.delete("/products/:id", async (req, res) => {
     const movie = await productModel.findById(req.params.id);
     if (movie.file) fs.unlinkSync("./public/Images/" + movie.file);
     await productModel.findByIdAndDelete(req.params.id);
+    res.json("Deleted Successfully");
+  } catch (err) {
+    res.json(err);
+  }
+});*/
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/Images");
+  },
+  filename: (req, file, cb) => {
+    const name = Date.now() + path.extname(file.originalname);
+    cb(null, name);
+  },
+});
+
+const upload = multer({ storage });
+
+app.post(
+  "/products",
+  upload.fields([
+    { name: "file", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
+  (req, res) => {
+    const movieObject = {
+      title: req.body.title,
+      description: req.body.description,
+      language: req.body.language,
+      category: req.body.category,
+
+      file: req.files.file && req.files.file[0].filename,
+      video: req.files.video && req.files.video[0].filename,
+
+      plan: req.body.plan,
+    };
+
+    productModel
+      .create(movieObject)
+      .then((data) => res.json(data))
+      .catch((err) => res.json(err));
+  },
+);
+app.get("/products", (req, res) => {
+  productModel
+    .find()
+    .then((data) => res.json(data))
+    .catch((err) => res.json(err));
+});
+
+app.get("/products/:id", (req, res) => {
+  productModel
+    .findById(req.params.id)
+    .then((data) => res.json(data))
+    .catch((err) => res.json(err));
+});
+
+app.put(
+  "/products/:id",
+  upload.fields([
+    { name: "file", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
+  (req, res) => {
+    let updateData = { ...req.body };
+
+    if (req.files.file) {
+      updateData.file = req.files.file[0].filename;
+    }
+
+    if (req.files.video) {
+      updateData.video = req.files.video[0].filename;
+    }
+
+    productModel
+      .findByIdAndUpdate(req.params.id, updateData)
+      .then(() => res.json("Updated Successfully"))
+      .catch((err) => res.json(err));
+  },
+);
+
+app.delete("/products/:id", async (req, res) => {
+  try {
+    const movie = await productModel.findById(req.params.id);
+
+    if (movie.file) {
+      const filePath = "./public/Images/" + movie.file;
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    await productModel.findByIdAndDelete(req.params.id);
+
     res.json("Deleted Successfully");
   } catch (err) {
     res.json(err);

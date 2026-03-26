@@ -7,24 +7,23 @@ function ViewProducts() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-   axios.get(`${import.meta.env.VITE_API_URL}/products`)
-
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/products`)
       .then((res) => {
         setMovies(res.data);
       })
-
       .catch((err) => console.log(err));
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`${import.meta.env.VITE_API_URL}/products/${id}`)
-
+    axios
+      .delete(`${import.meta.env.VITE_API_URL}/products/${id}`)
       .then(() => {
         alert("Deleted successfully");
 
-        window.location.reload();
+        
+        setMovies(movies.filter((movie) => movie._id !== id));
       })
-
       .catch((err) => console.log(err));
   };
 
@@ -33,51 +32,60 @@ function ViewProducts() {
       <h2>Movies List</h2>
 
       <table border="1">
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Language</th>
-          <th>Category</th>
-          <th>Image</th>
-          <th>Trailer</th>
-          <th>Plan</th>
-          <th colSpan={2}>Action</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Language</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Preview</th>
+            <th>Plan</th>
+            <th colSpan={2}>Action</th>
+          </tr>
+        </thead>
 
-        {movies.map((movie) => {
-          return (
+        <tbody>
+          {movies.map((movie) => (
             <tr key={movie._id}>
               <td>{movie.title}</td>
-
               <td>{movie.description}</td>
-
               <td>{movie.language}</td>
-
               <td>{movie.category}</td>
 
+              
               <td>
                 <img
-  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
-  width="100"
-/>
+                  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+                  width="100"
+                  alt={movie.title}
+                />
               </td>
 
+             
               <td>
-                {movie.videoLink ? (
-                  <iframe
+                {movie.video ? (
+                  <video
                     width="220"
                     height="120"
-                    src={movie.videoLink}
-                    title="trailer"
-                    allowFullScreen
-                  ></iframe>
+                    muted
+                    loop
+                    autoPlay
+                    playsInline
+                    poster={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+                  >
+                    <source
+                      src={`${import.meta.env.VITE_API_URL}/Videos/${movie.video}`}
+                      type="video/mp4"
+                    />
+                  </video>
                 ) : (
-                  <p>No Trailer</p>
+                  <p>No Video</p>
                 )}
               </td>
-<td>
-  {movie.plan}
-</td>
+
+              <td>{movie.plan}</td>
+
               <td>
                 <Link to={`/edit/${movie._id}`}>
                   <button className="up">Edit</button>
@@ -85,13 +93,16 @@ function ViewProducts() {
               </td>
 
               <td>
-                <button className="del" onClick={() => handleDelete(movie._id)}>
+                <button
+                  className="del"
+                  onClick={() => handleDelete(movie._id)}
+                >
                   Delete
                 </button>
               </td>
             </tr>
-          );
-        })}
+          ))}
+        </tbody>
       </table>
     </div>
   );
