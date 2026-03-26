@@ -49,7 +49,7 @@ const handleSubmit = (e) => {
 
     localStorage.setItem("userEmail", email);
 
-    navigate("/");
+   
   }
 })
     .catch((err) => {
