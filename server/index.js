@@ -66,9 +66,19 @@ mongoose.connect(process.env.MONGODB_URL)
 app.post("/signup", async (req, res) => {
   try {
     const user = await userModel.create(req.body);
-    res.json(user);
+
+    res.json({
+      status: "SUCCESS",
+      message: "Signup successful",
+      user: user,
+    });
+
   } catch (err) {
-    res.json(err);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Signup failed",
+      error: err.message,
+    });
   }
 });
 

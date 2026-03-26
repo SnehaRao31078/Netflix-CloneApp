@@ -8,7 +8,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 const  navigate=useNavigate();  
-  const handleSubmit = (e) => {
+  /*const handleSubmit = (e) => {
   e.preventDefault();
 
   axios
@@ -27,6 +27,31 @@ const  navigate=useNavigate();
 
       navigate("/");
     })
+    .catch((err) => {
+      console.log(err);
+      alert("Server not responding");
+    });
+};*/
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  axios
+    .post(`${import.meta.env.VITE_API_URL}/signup`, {
+      name,
+      email,
+      password,
+    })
+    .then((res) => {
+  console.log(res.data);
+
+  if (res.data.status === "SUCCESS") {
+    alert(res.data.message);
+
+    localStorage.setItem("userEmail", email);
+
+    navigate("/");
+  }
+})
     .catch((err) => {
       console.log(err);
       alert("Server not responding");
