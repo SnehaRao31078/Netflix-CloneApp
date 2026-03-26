@@ -39,7 +39,7 @@ function ViewProducts() {
             <th>Language</th>
             <th>Category</th>
             <th>Image</th>
-            <th>Preview</th>
+            <th>Video</th>
             <th>Plan</th>
             <th colSpan={2}>Action</th>
           </tr>
@@ -75,7 +75,7 @@ function ViewProducts() {
                     poster={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
                   >
                     <source
-                      src={`${import.meta.env.VITE_API_URL}/Videos/${movie.video}`}
+                      src={`${import.meta.env.VITE_API_URL}/Images/${movie.video}`}
                       type="video/mp4"
                     />
                   </video>
