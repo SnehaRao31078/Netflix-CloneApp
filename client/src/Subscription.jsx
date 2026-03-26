@@ -1,7 +1,45 @@
 import "./sub.css";
-import {Link} from "react-router-dom";
-function Subscription()
+import { useNavigate,Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect } from "react";
     {
+        const navigate = useNavigate();
+         useEffect(() => {
+    const plan = localStorage.getItem("userPlan");
+    if (plan) {
+      navigate("/home");
+    }
+  }, []);
+
+  
+  const handlePlan = (plan, price) => {
+    const email = localStorage.getItem("userEmail");
+
+    if (!email) {
+      alert("Please login first");
+      navigate("/");
+      return;
+    }
+
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/plans`, {
+        email,
+        plan,
+        price,
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        localStorage.setItem("userPlan", plan);
+
+       
+        navigate("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Subscription failed");
+      });
+  };
         return(
             <>
             <p className="logo-signin">NETFLIX</p>
@@ -23,9 +61,9 @@ function Subscription()
                  <h3>Resolution</h3>
                <p className="video">4K</p>
                <hr></hr>
-       <Link to="/plan?type=basic&price=99.99">
-                <button>Choose Basic plan</button>
-            </Link>
+       <button onClick={() => handlePlan("basic", 99.99)}>
+            Choose Basic Plan
+          </button>
              </div>
 
               <div className="basic">
@@ -39,7 +77,9 @@ function Subscription()
               <h3>Resolution</h3>
               <p className="video">1080p</p>
               <hr></hr>
-               <Link to="/plan?type=standard&price=149.99"> <button>Choose Standard plan</button></Link>
+               <button onClick={() => handlePlan("standard", 149.99)}>
+            Choose Standard Plan
+          </button>
              </div>
 
 
@@ -56,7 +96,9 @@ function Subscription()
                 <h3>Resolution</h3>
                 <p className="video">1080p</p>
                 <hr></hr>
-                <Link to="/plan?type=premium&price=199.99"> <button>Choose Premium plan</button></Link>
+                  <button onClick={() => handlePlan("premium", 199.99)}>
+            Choose Premium Plan
+          </button>
              </div>
              </div>
            
