@@ -19,7 +19,7 @@ function Edit() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/products/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/movies/${id}`)
       .then((res) => {
         setTitle(res.data.title);
         setDescription(res.data.description);
@@ -50,7 +50,7 @@ function Edit() {
     }
 
     axios
-      .put(`${import.meta.env.VITE_API_URL}/products/${id}`, formData)
+      .put(`${import.meta.env.VITE_API_URL}/movies/${id}`, formData)
       .then(() => {
         alert("Movie updated successfully");
         navigate("/admindash");
@@ -109,7 +109,7 @@ function Edit() {
   
             {videoPreview && (
               <video
-                src={`${import.meta.env.VITE_API_URL}/Images/${videoPreview}`}
+                src={`${import.meta.env.VITE_API_URL}/Videos/${videoPreview}`}
                 width="120"
                 controls
               />
