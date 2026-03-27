@@ -4,35 +4,12 @@ import axios from "axios";
 
 
 function Signup() {
-  console.log("API URL:", import.meta.env.VITE_API_URL);
+ 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
  
-  /*const handleSubmit = (e) => {
-  e.preventDefault();
-
-  axios
-    .post(`${import.meta.env.VITE_API_URL}/signup`, {
-      name,
-      email,
-      password,
-    })
-    .then((res) => {
-      console.log(res.data);
-
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userPlan", "");
-
-      alert("Signup successful");
-
-      navigate("/");
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("Server not responding");
-    });
-};*/
+ 
 const handleSubmit = (e) => {
   e.preventDefault();
 
