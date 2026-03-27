@@ -159,6 +159,7 @@ app.post(
     { name: "video", maxCount: 1 },
   ]),
   (req, res) => {
+    console.log("FILES:", req.files);
     const movieObject = {
       title: req.body.title,
       description: req.body.description,
