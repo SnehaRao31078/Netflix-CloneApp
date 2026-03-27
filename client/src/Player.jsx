@@ -29,7 +29,12 @@ function Player() {
 
       <h1>{movie.title}</h1>
 
-     <video width="800" height="450" controls autoPlay>
+     <video
+  width="800"
+  height="450"
+  controls
+  poster={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+>
   <source
     src={`${import.meta.env.VITE_API_URL}/Images/${movie.video}`}
     type="video/mp4"
