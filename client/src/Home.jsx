@@ -7,49 +7,45 @@ function Home() {
   const [banner, setBanner] = useState(null);
   const navigate = useNavigate();
   const currentUserPlan = localStorage.getItem("userPlan") || "none";
- useEffect(() => {
- axios.get(`${import.meta.env.VITE_API_URL}/products`)
-    .then((res) => {
-      const filteredByPlan = res.data.filter((movie) => {
-        
-        const userPlan = currentUserPlan?.toLowerCase();
-        const moviePlan = movie.plan?.toLowerCase();
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/products`)
+      .then((res) => {
+        const filteredByPlan = res.data.filter((movie) => {
+          const userPlan = currentUserPlan?.toLowerCase();
+          const moviePlan = movie.plan?.toLowerCase();
 
-        
-        if (userPlan === "premium") return true;
+          if (userPlan === "premium") return true;
 
-       
-        if (userPlan === "standard") {
-          return moviePlan === "standard" || moviePlan === "basic" || moviePlan === "free";
-        }
+          if (userPlan === "standard") {
+            return (
+              moviePlan === "standard" ||
+              moviePlan === "basic" ||
+              moviePlan === "free"
+            );
+          }
 
-       
-        if (userPlan === "basic") {
-          return moviePlan === "basic" || moviePlan === "free";
-        }
+          if (userPlan === "basic") {
+            return moviePlan === "basic" || moviePlan === "free";
+          }
 
-        
-        return moviePlan === "free";
-      });
+          return moviePlan === "free";
+        });
 
-      setMovies(filteredByPlan);
-    })
-    .catch((err) => console.log(err));
-}, [currentUserPlan]);
+        setMovies(filteredByPlan);
+      })
+      .catch((err) => console.log(err));
+  }, [currentUserPlan]);
 
-  useEffect(()=>
-  {
-    axios.get(`${import.meta.env.VITE_API_URL}/banners`)
-    .then((res)=>
-    {
-      setBanner(res.data[0]);
-    })
-    .catch((err)=>console.log(err));
-  },[]
-  );
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/banners`)
+      .then((res) => {
+        setBanner(res.data[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
- 
-  
   const scrollLeft = (id) => {
     document.getElementById(id).scrollLeft -= 300;
   };
@@ -61,20 +57,22 @@ function Home() {
   return (
     <div className="home">
       <div className="hero">
-        {banner&&
-        <iframe className="hero-video"
-        src={banner.videoLink +"?autoplay=1"}
-        
-        allow="autoplay; encrypted-media"
-        title="Hero Trailer"
-        allowFullScreen
-        >
-          </iframe>}
-<div className="overlay"></div>
+        {banner && (
+          <iframe
+            className="hero-video"
+            src={banner.videoLink + "?autoplay=1"}
+            allow="autoplay; encrypted-media"
+            title="Hero Trailer"
+            allowFullScreen
+          ></iframe>
+        )}
+        <div className="overlay"></div>
         <div className="hero-content">
-          <h1 className="title">{banner?banner.title:"Loading.."}</h1>
-          <p className="description">{banner?banner.description:"Loading..."}</p>
-          
+          <h1 className="title">{banner ? banner.title : "Loading.."}</h1>
+          <p className="description">
+            {banner ? banner.description : "Loading..."}
+          </p>
+
           <div className="buttons">
             <button className="play-btn">
               <i className="fas fa-play"></i> Play
@@ -101,11 +99,11 @@ function Home() {
               .filter((movie) => movie.category === "sci-fi horror")
               .map((movie) => (
                 <img
-  key={movie.id}
-  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
-  alt={movie.title}
-  onClick={() => navigate("/player/" + movie._id)}
-/>
+                  key={movie.id}
+                  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+                  alt={movie.title}
+                  onClick={() => navigate("/player/" + movie._id)}
+                />
               ))}
           </div>
           <button
@@ -129,11 +127,11 @@ function Home() {
               .filter((movie) => movie.category === "made in india")
               .map((movie) => (
                 <img
-  key={movie.id}
-  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
-  alt={movie.title}
-  onClick={() => navigate("/player/" + movie._id)}
-/>
+                  key={movie.id}
+                  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+                  alt={movie.title}
+                  onClick={() => navigate("/player/" + movie._id)}
+                />
               ))}
           </div>
           <button
