@@ -29,15 +29,13 @@ function Player() {
 
       <h1>{movie.title}</h1>
 
-      <iframe
-        width="800"
-        height="450"
-        src={movie.video + "?autoplay=1&controls=1"}
-        title="trailer"
-        
-        allow="autoplay; encrypted-media"
-        allowFullScreen
-      ></iframe>
+     <video width="800" height="450" controls autoPlay>
+  <source
+    src={`${import.meta.env.VITE_API_URL}/Images/${movie.video}`}
+    type="video/mp4"
+  />
+  Your browser does not support the video tag.
+</video>
 
       <p className="movie-description">{movie.description}</p>
     </div>
