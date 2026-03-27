@@ -21,6 +21,62 @@ if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email, password });
+
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+
+  const userPlan = await planModel.findOne({ email });
+
+  res.json({
+    status: "SUCCESS",
+    user: {
+      email: user.email,
+      plan: userPlan ? userPlan.plan : null
+    }
+  });
+});
+
+/*app.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
+
+  const stored = otpStore[email];
+  
+
+  if (stored.otp.toString() === otp.toString()) {
+    delete otpStore[email];
+    return res.json({ status: "Success" });
+  } else {
+    return res.json({ status: "Invalid OTP" });
+  }
+});*/
+
+app.post("/signup", async (req, res) => {
+  try {
+    const user = await userModel.create(req.body);
+
+    res.json({
+      status: "SUCCESS",
+      message: "Signup successful",
+      user: user,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      status: "ERROR",
+      message: "Signup failed",
+      error: err.message,
+    });
+  }
+});
+
+
 
 
 const storage = multer.diskStorage({
