@@ -5,7 +5,12 @@ body {
 }
 .dash
 {
+   display: grid;
   background-color: black;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+  padding: 0 50px;
 }
 h1 {
   color: white;
@@ -17,7 +22,7 @@ h1 {
   margin: 30px auto;
   padding: 30px;
   border-radius: 10px;
-  background-color: green;
+  background-color:aquamarine;
   color: white;
   font-size: 20px;
   cursor: pointer;
@@ -28,7 +33,7 @@ h1 {
   margin: 30px auto;
   padding: 30px;
   border-radius: 10px;
-  background-color: orange;
+  background-color:yellow;
   color: white;
   font-size: 20px;
   cursor: pointer;
@@ -39,7 +44,7 @@ h1 {
   margin: 30px auto;
   padding: 30px;
   border-radius: 10px;
-  background-color:blue;
+  background-color:lightcoral;
   color: white;
   font-size: 20px;
   cursor: pointer;
@@ -54,3 +59,16 @@ h1 {
   font-size: 20px;
   cursor: pointer;
 }
+.viewsub-box
+{
+  width:300px;
+  margin:30px auto;
+  padding:30px;
+  border-radius:10px;
+  background-color:darkcyan;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+
+}
+
