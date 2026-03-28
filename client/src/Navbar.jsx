@@ -1,6 +1,13 @@
  import { Link } from "react-router-dom";
  import "./home.css";
  function Nav() {
+    const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+  }, []);
+
  return (
  <nav className="navbar">
         <div className="nav-left">
@@ -29,9 +36,10 @@
       <div className="profile-menu">
 
         <div className="menu-row">
-          <img src="/redsmile.png"/>
-          <span>Lasya</span>
-        </div>
+              <img src="/redsmile.png" />
+              <span>{user?.name || "Guest"}</span>
+            </div>
+
 
         <div className="menu-row">
           <img src="/yellowsmile.png"/>
