@@ -274,6 +274,15 @@ app.put("/plans/:id", async (req, res) => {
   }
 });
 
+app.get("/plans/:id", async (req, res) => {
+  try {
+    const data = await planModel.findById(req.params.id);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
