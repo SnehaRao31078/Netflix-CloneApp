@@ -8,6 +8,7 @@ function Player() {
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
+   const [showControls, setShowControls] =useState(false);
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`)
@@ -19,9 +20,15 @@ function Player() {
       .catch((err) => console.log(err));
   }, [id]);
 
-  if (!movie) {
+ if(!movie)
+  {
     return <h2>Loading...</h2>;
   }
+
+  const toogleControls = () => {
+    setShowControls(!showControls);
+
+  };
 
   return (
     <div style={{ background: "black", color: "white", padding: "30px" }}>
@@ -32,8 +39,9 @@ function Player() {
     <video
   width="800"
   height="450"
-  controls
+    controls={showControls}
   poster={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+  onClick={toogleControls}
 >
   <source
     src={`${import.meta.env.VITE_API_URL}/Images/${movie.video}`}
@@ -43,6 +51,7 @@ function Player() {
 </video>
 
       <p className="movie-description">{movie.description}</p>
+       <p className="movie-language">{movie.language}</p>
     </div>
   );
 }
