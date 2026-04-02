@@ -8,31 +8,38 @@ function Plan() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Get plan and price from URL query params
   const queryParams = new URLSearchParams(location.search);
   const plan = queryParams.get("type");
-  const price = queryParams.get("price");
+  const priceParam = queryParams.get("price");
+  const price = priceParam ? Number(priceParam) : 0; // Convert to number
+
+  if (!plan || !price) {
+    // Redirect or show error if missing
+    alert("Plan or price is missing in URL!");
+    navigate("/subscribe");
+    return null;
+  }
 
   const handlePayment = async () => {
     try {
-     
+      // Call backend to create Razorpay order
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/payment/process`,
-        { amount: price }
+        { amount: price } // send as number
       );
 
       const order = data.order;
 
-      
       const options = {
-        key: "rzp_test_SYDNnZrYlyhqer", 
+        key: "rzp_test_SYDNnZrYlyhqer", // Your Razorpay test key
         amount: order.amount,
         currency: "INR",
         name: "Netflix Clone",
-        description: plan + " Subscription",
+        description: `${plan} Subscription`,
         order_id: order.id,
-
         handler: async function (response) {
-         
+          // Send payment verification to backend
           const verifyRes = await axios.post(
             `${import.meta.env.VITE_API_URL}/payment/verify`,
             {
@@ -51,11 +58,9 @@ function Plan() {
             alert("Payment Failed");
           }
         },
-
         prefill: {
           email: email,
         },
-
         theme: {
           color: "#E50914",
         },
@@ -64,7 +69,8 @@ function Plan() {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.log(err);
+      console.error("Payment Error:", err);
+      alert("Payment failed. Try again.");
     }
   };
 
@@ -78,231 +84,25 @@ function Plan() {
         placeholder="Enter Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
       />
 
-<select value={country} onChange={(e) => setCountry(e.target.value)}>
-  <option value="">Select Country</option>
-  <option value="India">India</option>
-  <option value="USA">USA</option>
-</select>
-      <br /><br />
+      <select
+        value={country}
+        onChange={(e) => setCountry(e.target.value)}
+        required
+      >
+        <option value="">Select Country</option>
+        <option value="India">India</option>
+        <option value="USA">USA</option>
+      </select>
 
-      <button onClick={handlePayment}>
-        Pay Now
-      </button>
+      <br />
+      <br />
+
+      <button onClick={handlePayment}>Pay Now</button>
     </>
   );
 }
 
 export default Plan;
-
-
-
-/*import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-function Plan() {
-  const [email, setEmail] = useState("");
-  const [card, setCard] = useState("");
-  const [holder, setHolder] = useState("");
-  const [country, setCountry] = useState("");
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const [status, setStatus] = useState("");
-  const plan = queryParams.get("type");
-  const price = queryParams.get("price");
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = { email, card, holder, country, plan, price };
-
-    try {
-      const res = await axios.post(
-        `http://localhost:3001/plans`,
-        data
-      );
-
-      if (res.data.success) {
-        localStorage.setItem("userPlan", plan);
-        localStorage.setItem("userEmail", email); 
-        setStatus("success");
-        alert("Payment successful");
-        navigate("/home");
-      } else {
-        setStatus("failed");
-        alert("Subscribe to plan");
-        navigate("/subscribe");
-      }
-    } catch (err) {
-      console.error(err);
-      setStatus("failed");
-      alert("Payment failed");
-      navigate("/subscribe");
-    }
-  };
-
-  return (
-    <>
-      <h1>Subscribe to {plan} plan</h1>
-      <h2>Monthly price: ₹{price}</h2> 
-
-      <div className="container">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Enter The Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="Enter card details"
-            value={card}
-            onChange={(e) => setCard(e.target.value)}
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="Cardholder Name"
-            value={holder}
-            onChange={(e) => setHolder(e.target.value)}
-            required
-          />
-
-          <div>
-            <select
-              className="inputfield"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              required
-            >
-              <option value="">Choose a Country:</option>
-              <option value="india">India</option>
-              <option value="pak">Pakistan</option>
-            </select>
-          </div>
-
-          <button type="submit">Subscribe</button>
-        </form>
-
-        {status === "success" && (
-          <h2 style={{ color: "green" }}>Payment Successful</h2>
-        )}
-
-        {status === "failed" && (
-          <h2 style={{ color: "red" }}>Subscribe to plan</h2>
-        )}
-      </div>
-    </>
-  );
-}
-
-export default Plan;*/
-
-
-/*import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-function Plan() {
-  const [email, setEmail] = useState("");
-  const [card, setCard] = useState("");
-  const [holder, setHolder] = useState("");
-  const [country, setCountry] = useState("");
-  const location = useLocation();
-
-const { plan, price } = location.state || {};
-  const [status, setStatus] = useState("");
-  
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = { email, card, holder, country, plan, price };
-
-    try {
-const res = await axios.post(
-  `${import.meta.env.VITE_API_URL}/plans`,
-  data
-);
-
-      if (res.data.success) {
-        localStorage.setItem("userPlan", plan);
-        setStatus("success");
-        alert("Payment successful");
-        navigate("/home");
-      } else {
-        setStatus("failed");
-        alert("Subscribe to plan");
-        navigate("/subscribe");
-      }
-    } catch (err) {
-      console.error(err);
-      setStatus("failed");
-      alert("Payment failed");
-      navigate("/subscribe");
-    }
-  };
-
-  return (
-    <>
-      <h1>Subscribe to {plan} plan</h1>
-      <h2>Monthly price:${price}</h2>
-      <div className="container">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Enter The Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Enter card details"
-            value={card}
-            onChange={(e) => setCard(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Cardholder Name"
-            value={holder}
-            onChange={(e) => setHolder(e.target.value)}
-          />
-
-          <div>
-            <select
-              className="inputfield"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            >
-              <option value="">Choose a Country:</option>
-              <option value="india">India</option>
-            </select>
-          </div>
-
-          <button type="submit">Subscribe</button>
-        </form>
-        {status === "success" && (
-          <h2 style={{ color: "green" }}>Payment Successful </h2>
-        )}
-
-        {status === "failed" && (
-          <h2 style={{ color: "red" }}>subscribe to plan </h2>
-        )}
-      </div>
-    </>
-  );
-}
-
-export default Plan;*/
