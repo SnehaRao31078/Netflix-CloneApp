@@ -100,7 +100,7 @@ function Home() {
     .map((movie) => (
       <img
         key={movie._id}
-        src={movie.file}   // ✅ FIXED
+        src={movie.file}   
         alt={movie.title}
         onClick={() => navigate("/player/" + movie._id)}
       />
