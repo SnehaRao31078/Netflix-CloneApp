@@ -60,7 +60,7 @@ function Home() {
         {banner && (
           <iframe
             className="hero-video"
-            src={banner.videoLink + "?autoplay=1"}
+            src="https://www.youtube.com/embed/nsC5PhXS19Y?"
             allow="autoplay; encrypted-media"
             title="Hero Trailer"
             allowFullScreen
