@@ -94,18 +94,18 @@ function Home() {
             ‹
           </button>
 
-          <div className="row-posters" id="row1">
-            {movies
-              .filter((movie) => movie.category === "sci-fi horror")
-              .map((movie) => (
-                <img
-                  key={movie.id}
-                  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
-                  alt={movie.title}
-                  onClick={() => navigate("/player/" + movie._id)}
-                />
-              ))}
-          </div>
+         <div className="row-posters" id="row1">
+  {movies
+    .filter((movie) => movie.category === "sci-fi horror")
+    .map((movie) => (
+      <img
+        key={movie._id}
+        src={movie.file}   // ✅ FIXED
+        alt={movie.title}
+        onClick={() => navigate("/player/" + movie._id)}
+      />
+    ))}
+</div>
           <button
             className="scroll-btn right"
             onClick={() => scrollRight("row1")}
@@ -128,7 +128,7 @@ function Home() {
               .map((movie) => (
                 <img
                   key={movie.id}
-                  src={`${import.meta.env.VITE_API_URL}/Images/${movie.file}`}
+                  src={movie.file} 
                   alt={movie.title}
                   onClick={() => navigate("/player/" + movie._id)}
                 />
