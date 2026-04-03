@@ -1,13 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const crypto = require("crypto");
-
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const Razorpay = require("razorpay");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+/*const path = require("path");
+const fs = require("fs");*/
+const { v2: cloudinary } = require("cloudinary");
 /*const { Resend } = require("resend");*/
 
 const userModel = require("./models/user");
@@ -18,22 +19,20 @@ const planModel = require("./models/plans");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/Images", express.static(path.join(__dirname, "public/Images")));
+/*app.use("/Images", express.static(path.join(__dirname, "public/Images")));
 
 
 const imagesDir = path.join(__dirname, "public", "Images");
-if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
+if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });*/
 
-
-mongoose.connect(process.env.MONGODB_URL)
+mongoose
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 //let otpStore = {};
 
-
-
- app.post("/signin", async (req, res) => {
+app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email, password });
@@ -42,15 +41,14 @@ mongoose.connect(process.env.MONGODB_URL)
     return res.json({ status: "User not found" });
   }
 
-
   const userPlan = await planModel.findOne({ email });
 
   res.json({
     status: "SUCCESS",
     user: {
       email: user.email,
-      plan: userPlan ? userPlan.plan : null
-    }
+      plan: userPlan ? userPlan.plan : null,
+    },
   });
 });
 
@@ -76,13 +74,12 @@ const instance = new Razorpay({
   key_secret: process.env.RAZORPAY_API_SECRET,
 });
 
-
 app.post("/payment/process", async (req, res) => {
   try {
     const { amount } = req.body;
 
     const options = {
-      amount: amount * 100, 
+      amount: amount * 100,
       currency: "INR",
       receipt: "receipt_" + Date.now(),
     };
@@ -99,7 +96,6 @@ app.post("/payment/process", async (req, res) => {
   }
 });
 
-
 app.post("/payment/verify", async (req, res) => {
   try {
     const {
@@ -109,7 +105,7 @@ app.post("/payment/verify", async (req, res) => {
       email,
       plan,
       price,
-      country
+      country,
     } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -120,13 +116,12 @@ app.post("/payment/verify", async (req, res) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
-      
       await planModel.create({
         email,
         plan,
         price,
         country,
-         paymentId: razorpay_payment_id
+        paymentId: razorpay_payment_id,
       });
 
       return res.json({ success: true });
@@ -138,7 +133,23 @@ app.post("/payment/verify", async (req, res) => {
     res.json({ success: false });
   }
 });
+/*Cloudinary Storage*/
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const cloudinarystorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "netflix-clone",
+    resource_type: "auto",
+    allowed_formats: ["jpg", "jpeg", "png", "mp4"],
+    public_id: (req, file) => Date.now() + "-" + file.originalname,
+  },
+});
 app.post("/signup", async (req, res) => {
   try {
     const user = await userModel.create(req.body);
@@ -148,7 +159,6 @@ app.post("/signup", async (req, res) => {
       message: "Signup successful",
       user: user,
     });
-
   } catch (err) {
     res.status(500).json({
       status: "ERROR",
@@ -158,7 +168,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
+/*const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, imagesDir);
   },
@@ -167,8 +177,9 @@ const storage = multer.diskStorage({
     cb(null, name);
   },
 });
-const upload = multer({ storage });
+const upload = multer({ storage });*/
 
+const upload = multer({ storage: cloudinarystorage });
 
 app.post(
   "/products",
@@ -191,8 +202,8 @@ app.post(
         language: req.body.language,
         category: req.body.category,
         plan: req.body.plan,
-        file: req.files.file[0].filename,
-        video: req.files.video ? req.files.video[0].filename : null,
+        file: req.files.file[0].path,
+        video: req.files.video ? req.files.video[0].path : null,
       };
 
       const created = await productModel.create(newProduct);
@@ -201,9 +212,8 @@ app.post(
       console.error("Error creating product:", err);
       res.status(500).json({ error: err.message });
     }
-  }
+  },
 );
-
 
 app.get("/products", async (req, res) => {
   try {
@@ -214,7 +224,6 @@ app.get("/products", async (req, res) => {
   }
 });
 
-
 app.get("/products/:id", async (req, res) => {
   try {
     const product = await productModel.findById(req.params.id);
@@ -223,7 +232,6 @@ app.get("/products/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 app.put(
   "/products/:id",
@@ -235,19 +243,22 @@ app.put(
     try {
       const updateData = { ...req.body };
 
-      if (req.files.file) updateData.file = req.files.file[0].filename;
-      if (req.files.video) updateData.video = req.files.video[0].filename;
+      if (req.files && req.files.file) {
+        updateData.file = req.files.file[0].path;
+      }
+      if (req.files && req.files.video) {
+        updateData.video = req.files.video[0].path;
+      }
 
       await productModel.findByIdAndUpdate(req.params.id, updateData);
       res.json({ message: "Updated Successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-  }
+  },
 );
 
-
-app.delete("/products/:id", async (req, res) => {
+/*app.delete("/products/:id", async (req, res) => {
   try {
     const product = await productModel.findById(req.params.id);
 
@@ -260,6 +271,15 @@ app.delete("/products/:id", async (req, res) => {
       if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
     }
 
+    await productModel.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted Successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});*/
+
+app.delete("/products/:id", async (req, res) => {
+  try {
     await productModel.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted Successfully" });
   } catch (err) {
@@ -329,7 +349,6 @@ app.get("/plans", async (req, res) => {
     res.status(500).json({ message: "Error fetching plans" });
   }
 });
-
 
 app.get("/plans/:id", async (req, res) => {
   try {

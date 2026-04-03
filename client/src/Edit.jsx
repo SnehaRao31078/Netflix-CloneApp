@@ -25,8 +25,8 @@ function Edit() {
         setDescription(res.data.description);
         setLanguage(res.data.language);
 
-        setImagePreview(res.data.file);   
-        setVideoPreview(res.data.video);  
+        setImagePreview(res.data.file);
+        setVideoPreview(res.data.video);
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -40,7 +40,6 @@ function Edit() {
     formData.append("description", description);
     formData.append("language", language);
 
-    
     if (file) {
       formData.append("file", file);
     }
@@ -86,34 +85,13 @@ function Edit() {
               onChange={(e) => setLanguage(e.target.value)}
             />
 
-           
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
+            <input type="file" onChange={(e) => setFile(e.target.files[0])} />
 
-          
-            {imagePreview && (
-              <img
-                src={`${import.meta.env.VITE_API_URL}/Images/${imagePreview}`}
-                width="120"
-              />
-            )}
+            {imagePreview && <img src={imagePreview} width="120" />}
 
-            
-            <input
-              type="file"
-              onChange={(e) => setVideo(e.target.files[0])}
-            />
+            <input type="file" onChange={(e) => setVideo(e.target.files[0])} />
 
-  
-            {videoPreview && (
-              <video
-                src={`${import.meta.env.VITE_API_URL}/Videos/${videoPreview}`}
-                width="120"
-                controls
-              />
-            )}
+            {videoPreview && <video src={videoPreview} width="120" controls />}
 
             <button type="submit">Update</button>
           </form>
