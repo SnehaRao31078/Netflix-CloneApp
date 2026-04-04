@@ -57,22 +57,18 @@ function Home() {
   return (
     <div className="home">
       <div className="hero">
-        {banner && (
-  <video
-    className="hero-video"
-    src={banner.videoLink}
-    autoPlay
-    muted
-    loop
-    playsInline
-    controls
-  />
-)}
-        <div className="overlay"></div>
+    <iframe
+  className="hero-video"
+  src="https://www.youtube.com/embed/hs3w32RG8L8?autoplay=1&mute=1"
+  title="Hero Video"
+  allow="autoplay; encrypted-media"
+  allowFullScreen
+></iframe>
+     <div className="overlay"></div>
         <div className="hero-content">
-          <h1 className="title">{banner ? banner.title : "Loading.."}</h1>
+          <h1 className="title">Chhaava</h1>
           <p className="description">
-            {banner ? banner.description : "Loading..."}
+            Chhaava is a 2025 Hindi-language historical action drama based on the life of Chhatrapati Sambhaji Maharaj, the second ruler of the Maratha Empire. The film is directed by Laxman Utekar, produced by Dinesh Vijan under Maddock Films, and stars Vicky Kaushal as Sambhaji, with Akshaye Khanna as Aurangzeb.
           </p>
 
           <div className="buttons">

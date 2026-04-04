@@ -36,10 +36,10 @@ function App() {
         <Route path="/delete/:id" element={<ViewProducts />} />
         <Route path="/player/:id" element={<Player />} />
        {/*<Route path="/otp" element={<Otp />} />*/}
-        <Route path="/hero" element={<HeroAdmin />} />
-        <Route path="/heroview" element={<HeroView />} />
-        <Route path="/heroesedit/:id" element={<HeroAdmin />} />
-        <Route path="/delete/:id" element={<HeroView />} />
+        {/*<Route path="/hero" element={<HeroAdmin />} />*/}
+       {/* <Route path="/heroview" element={<HeroView />} />*/}
+        {/*<Route path="/heroesedit/:id" element={<HeroAdmin />} />*/}
+        {/*<Route path="/delete/:id" element={<HeroView />} />*/}
         <Route path="/subscribe" element={<Subscription />} />
         <Route path="/plan" element={<Plan />} />
         

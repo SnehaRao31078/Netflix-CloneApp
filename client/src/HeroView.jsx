@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+/*import { useEffect, useState } from "react";
 import axios from "axios";
 import "./heroview.css";
 import { Link } from "react-router-dom";
@@ -81,4 +81,4 @@ function HeroView() {
   );
 }
 
-export default HeroView;
+export default HeroView;*/
