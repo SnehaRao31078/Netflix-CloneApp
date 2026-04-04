@@ -57,13 +57,7 @@ function Home() {
   return (
     <div className="home">
       <div className="hero">
-    <iframe
-  className="hero-video"
-  src="https://www.youtube.com/embed/hs3w32RG8L8?autoplay=1&mute=1"
-  title="Hero Video"
-  allow="autoplay; encrypted-media"
-  allowFullScreen
-></iframe>
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/hs3w32RG8L8?si=BC4GUzdLZBARkLhI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
      <div className="overlay"></div>
         <div className="hero-content">
           <h1 className="title">Chhaava</h1>
