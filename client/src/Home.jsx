@@ -57,7 +57,17 @@ function Home() {
   return (
     <div className="home">
       <div className="hero">
-
+        {banner && (
+  <video
+    className="hero-video"
+    src={banner.videoLink}
+    autoPlay
+    muted
+    loop
+    playsInline
+    controls
+  />
+)}
         <div className="overlay"></div>
         <div className="hero-content">
           <h1 className="title">{banner ? banner.title : "Loading.."}</h1>
