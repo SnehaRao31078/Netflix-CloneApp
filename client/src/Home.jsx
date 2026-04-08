@@ -149,7 +149,7 @@ function Home() {
           >
             ‹
           </button>
-          <div className="row-posters" id="row2">
+          <div className="row-posters" id="row3">
             {movies
               .filter((movie) => movie.category === "comedy-drama")
               .map((movie) => (
