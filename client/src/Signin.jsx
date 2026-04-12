@@ -86,7 +86,7 @@ const handleSubmit = (e) => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Continue</button>
+          <Link to="/otp">  <button type="submit">Continue</button></Link>
           </form>
           <div className="help">
             <Link to="/signup">Signup if you dont have account</Link>
