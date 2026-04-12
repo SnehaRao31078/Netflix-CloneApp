@@ -10,8 +10,8 @@ const multer = require("multer");
 const fs = require("fs");*/
 const { v2: cloudinary } = require("cloudinary");
 /*sendgrid*/
-/*const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);*/
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 const userModel = require("./models/user");
@@ -31,31 +31,7 @@ mongoose
 
 /*sendgrid*/
 
-/*let otpStore = {};
-app.post("/send-otp", async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    const otp = Math.floor(100000 + Math.random() * 900000);
-
-    otpStore[email] = otp;
-
-    const msg = {
-      to: email,
-      from: "sneha8484rao@gmail.com", 
-      subject: "OTP Verification",
-      text: `Your OTP is ${otp}`,
-      html: `<h2>Your OTP is: ${otp}</h2>`,
-    };
-
-    await sgMail.send(msg);
-
-    res.json({ status: "OTP SENT" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ status: "ERROR SENDING MAIL" });
-  }
-});
+let otpStore = {};
 
 app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
@@ -66,9 +42,9 @@ app.post("/verify-otp", (req, res) => {
   } else {
     return res.json({ status: "Invalid OTP" });
   }
-});*/
+});
 
-app.post("/signin", async (req, res) => {
+/*app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email, password });
@@ -86,9 +62,64 @@ app.post("/signin", async (req, res) => {
       plan: userPlan ? userPlan.plan : null,
     },
   });
+});*/
+/*app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email, password });
+
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+  // 👉 generate OTP
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  otpStore[email] = otp;
+
+  const msg = {
+    to: email,
+    from: "sneha8484rao@gmail.com",
+    subject: "OTP Verification",
+    text: `Your OTP is ${otp}`,
+    html: `<h2>Your OTP is: ${otp}</h2>`,
+  };
+
+  await sgMail.send(msg);
+
+  res.json({
+    status: "OTP_SENT",
+    email,
+  });
 });
+*/
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await userModel.findOne({ email, password });
 
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+  // call same OTP logic
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  otpStore[email] = otp;
+
+  const msg = {
+    to: email,
+    from: "sneha8484rao@gmail.com",
+    subject: "OTP Verification",
+    text: `Your OTP is ${otp}`,
+    html: `<h2>Your OTP is: ${otp}</h2>`,
+  };
+
+  await sgMail.send(msg);
+
+  res.json({
+    status: "OTP_SENT",
+    email,
+  });
+});
 /*app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
   if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
