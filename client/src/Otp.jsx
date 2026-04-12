@@ -75,7 +75,12 @@ function Otp() {
           onChange={(e) => setOtp(e.target.value)}
         />
         <br/><br/>
-        <button type="submit" className="otp-btn" onClick={resendOtp}>Verify OTP</button>
+        <button type="submit" className="otp-btn" >Verify OTP</button>
+        <br>
+        </br>
+        <button type="button" onClick={resendOtp}>
+  Resend OTP
+</button>
       </form>
     </div>
   );
