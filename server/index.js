@@ -26,7 +26,7 @@ mongoose
 
 //let otpStore = {};
 
-sgMail.setApiKey(process.env.SENDGRID_KEY);
+/*sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 const message={
   to: email,
@@ -56,6 +56,39 @@ app.post("/signin", async (req, res) => {
       email: user.email,
       plan: userPlan ? userPlan.plan : null,
     },
+  });
+});*/
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email, password });
+
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+  // ✅ generate OTP
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  // ✅ email message
+  const message = {
+    to: email,
+    from: 'sneha8484rao@gmail.com',
+    subject: 'Your OTP',
+    text: `Your OTP is ${otp}`,
+    html: `<strong>Your OTP is ${otp}</strong>`,
+  };
+
+  try {
+    await sgMail.send(message);
+    console.log("Email sent ✅");
+  } catch (err) {
+    console.error("SendGrid error:", err);
+  }
+
+  res.json({
+    status: "SUCCESS",
+    message: "OTP sent",
   });
 });
 /*Razorpay*/
