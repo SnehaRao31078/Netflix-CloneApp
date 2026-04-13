@@ -79,7 +79,7 @@ app.post("/signin", async (req, res) => {
 //let otpStore = {};
 
 
-app.post("/verify-otp", (req, res) => {
+/*app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
   if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
 
@@ -91,6 +91,31 @@ app.post("/verify-otp", (req, res) => {
     return res.json({ status: "Success" });
   } else {
     return res.json({ status: "Invalid OTP" });
+  }
+});*/
+
+app.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!otpStore[email]) {
+    return res.json({ status: "INVALID_OTP" });
+  }
+
+  const stored = otpStore[email];
+
+  if (stored.otp.toString() === otp.toString()) {
+    delete otpStore[email];
+
+
+    const userPlan = await planModel.findOne({ email });
+
+    return res.json({
+      status: "SUCCESS",
+      plan: userPlan ? userPlan.plan : null,
+    });
+
+  } else {
+    return res.json({ status: "INVALID_OTP" });
   }
 });
 
