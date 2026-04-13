@@ -75,8 +75,8 @@ app.post("/signin", async (req, res) => {
     to: 'sneharao31078@gmail.com',
     from: 'sneha8484rao@gmail.com',
     subject: 'Your OTP',
-    text: `Your OTP is ${otp}`,
-    html: `<strong>Your OTP is ${otp}</strong>`,
+    text: `Your OTP`,
+    html: `<strong>Your OTP is</strong>`,
   };
 
   try {
