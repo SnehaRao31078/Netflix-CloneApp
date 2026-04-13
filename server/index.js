@@ -28,7 +28,7 @@ mongoose
 
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-const message={
+/*const message={
   to: email,
   from: 'sneha8484rao@gmail.com',
   subject: 'Your OTP for Netflix Subscription',
@@ -37,7 +37,7 @@ const message={
 }
 sgMail.send(message)
 .then(() => console.log("OTP sent successfully"))
-.catch((error) => console.error("Error sending OTP:", error));
+.catch((error) => console.error("Error sending OTP:", error));*/
 
 /*app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
