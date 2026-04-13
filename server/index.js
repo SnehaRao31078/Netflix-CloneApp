@@ -26,7 +26,7 @@ mongoose
 
 //let otpStore = {};
 
-/*sgMail.setApiKey(process.env.SENDGRID_KEY);
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 const message={
   to: email,
@@ -39,7 +39,7 @@ sgMail.send(message)
 .then(() => console.log("OTP sent successfully"))
 .catch((error) => console.error("Error sending OTP:", error));
 
-app.post("/signin", async (req, res) => {
+/*app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email, password });
@@ -57,7 +57,8 @@ app.post("/signin", async (req, res) => {
       plan: userPlan ? userPlan.plan : null,
     },
   });
-});*/
+});
+*/
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
@@ -67,16 +68,15 @@ app.post("/signin", async (req, res) => {
     return res.json({ status: "User not found" });
   }
 
-  // ✅ generate OTP
-  const otp = Math.floor(100000 + Math.random() * 900000);
+ const otp = Math.floor(100000 + Math.random() * 900000);
 
   // ✅ email message
   const message = {
     to: 'sneharao31078@gmail.com',
     from: 'sneha8484rao@gmail.com',
     subject: 'Your OTP',
-    text: `Your OTP`,
-    html: `<strong>Your OTP is</strong>`,
+    text: `Your OTP ${otp}`,
+    html: `<strong>Your OTP is ${otp}</strong>`,
   };
 
   try {
