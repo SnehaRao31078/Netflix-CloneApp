@@ -24,7 +24,7 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-let otpStore = {};
+//let otpStore = {};
 
 
 
