@@ -14,7 +14,7 @@ const userModel = require("./models/user");
 const productModel = require("./models/products");
 
 const planModel = require("./models/plans");
-
+const sgMail = require('@sendgrid/mail');
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -24,9 +24,22 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
+//let otpStore = {};
 
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-app.post("/signin", async (req, res) => {
+/*const message={
+  to: email,
+  from: 'sneha8484rao@gmail.com',
+  subject: 'Your OTP for Netflix Subscription',
+  text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+  html:`<p>Your OTP is <strong>${otp}</strong>. It is valid for 5 minutes.</p>`,
+}
+sgMail.send(message)
+.then(() => console.log("OTP sent successfully"))
+.catch((error) => console.error("Error sending OTP:", error));*/
+
+/*app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email, password });
@@ -45,8 +58,45 @@ app.post("/signin", async (req, res) => {
     },
   });
 });
+*/
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await userModel.findOne({ email, password });
 
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+ const otp = Math.floor(100000 + Math.random() * 900000);
+
+  // ✅ email message
+  const message = {
+    to: 'sneharao31078@gmail.com',
+    from: 'sneha8484rao@gmail.com',
+    subject: 'Your OTP',
+    text: `Your OTP ${otp}`,
+    html: `<strong>Your OTP is ${otp}</strong>`,
+  };
+
+  try {
+  await sgMail.send(message);
+  console.log("Email sent ✅");
+
+  return res.json({
+    status: "SUCCESS",
+    message: "OTP sent",
+  });
+
+} catch (err) {
+  console.log("SENDGRID ERROR 👉", err.response?.body || err);
+
+  return res.json({
+    status: "ERROR",
+    message: "Email failed",
+  });
+}
+});
 /*Razorpay*/
 
 const instance = new Razorpay({
