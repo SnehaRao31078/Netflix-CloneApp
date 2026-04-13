@@ -12,8 +12,10 @@ const { v2: cloudinary } = require("cloudinary");
 
 const userModel = require("./models/user");
 const productModel = require("./models/products");
+const { Resend } = require("resend");
 
-
+const resend = new Resend(process.env.RESEND_API_KEY);
+const planModel = require("./models/plans");
 
 const app = express();
 app.use(express.json());
@@ -69,6 +71,51 @@ app.post("/signin", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ status: "Server Error" });
+  }
+});
+
+
+
+//let otpStore = {};
+
+
+/*app.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  if (!otpStore[email]) return res.json({ status: "Invalid OTP" });
+
+  const stored = otpStore[email];
+  
+
+  if (stored.otp.toString() === otp.toString()) {
+    delete otpStore[email];
+    return res.json({ status: "Success" });
+  } else {
+    return res.json({ status: "Invalid OTP" });
+  }
+});*/
+
+app.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!otpStore[email]) {
+    return res.json({ status: "INVALID_OTP" });
+  }
+
+  const stored = otpStore[email];
+
+  if (stored.otp.toString() === otp.toString()) {
+    delete otpStore[email];
+
+
+    const userPlan = await planModel.findOne({ email });
+
+    return res.json({
+      status: "SUCCESS",
+      plan: userPlan ? userPlan.plan : null,
+    });
+
+  } else {
+    return res.json({ status: "INVALID_OTP" });
   }
 });
 
