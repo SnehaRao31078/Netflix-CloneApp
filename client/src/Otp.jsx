@@ -1,4 +1,4 @@
-/*import { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -55,4 +55,4 @@ const verifyOtp = (e) => {
   );
 }
 
-export default Otp; */
+export default Otp; 

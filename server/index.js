@@ -28,7 +28,7 @@ mongoose
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendWelcomeEmail = async (userEmail) => {
+/*const sendWelcomeEmail = async (userEmail) => {
   const msg = {
     to: userEmail, 
     from: 'sneha8484rao@gmail.com', 
@@ -72,7 +72,62 @@ app.post("/signin", async (req, res) => {
     },
   });
 });
+*/
 
+// Add this helper function
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userModel.findOne({ email, password });
+
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+  const otp = generateOTP();
+  
+  // Save OTP to user record (ensure your Schema has an 'otp' field)
+  await userModel.findOneAndUpdate({ email }, { otp });
+
+  // Update your email function to send the OTP
+  const msg = {
+    to: email,
+    from: 'sneha8484rao@gmail.com',
+    subject: 'Your Netflix Clone OTP',
+    text: `Your OTP is ${otp}`,
+    html: `<h1>Verification Code</h1><p>Your OTP is <strong>${otp}</strong></p>`,
+  };
+
+  try {
+    await sgMail.send(msg);
+    res.json({ status: "OTP_SENT" }); // Tell frontend to move to OTP page
+  } catch (error) {
+    res.status(500).json({ status: "Email error" });
+  }
+});
+app.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await userModel.findOne({ email, otp });
+
+  if (!user) {
+    return res.json({ status: "Invalid OTP" });
+  }
+
+  // Clear OTP after successful use
+  await userModel.findOneAndUpdate({ email }, { otp: null });
+
+  // Check for subscription plan
+  const userPlan = await planModel.findOne({ email });
+
+  res.json({
+    status: "SUCCESS",
+    user: {
+      email: user.email,
+      plan: userPlan ? userPlan.plan : null,
+    },
+  });
+});
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
   key_secret: process.env.RAZORPAY_API_SECRET,
