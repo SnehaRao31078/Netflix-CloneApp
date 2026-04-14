@@ -24,48 +24,14 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-/*Sendgrid*/
 
-/*const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const sendWelcomeEmail = async (userEmail) => {
-const msg = {
-  to: 'sneharao31078@gmail.com',
-  from: 'sneha8484rao@gmail.com', // Use the email address or domain you verified above
-  subject: 'Sending with Twilio SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-};
-
-sgMail
-  .send(msg)
-  .then(() => {}, error => {
-    console.error(error);
-
-    if (error.response) {
-      console.error(error.response.body)
-    }
-  });
-
-(async () => {
-  try {
-    await sgMail.send(msg);
-  } catch (error) {
-    console.error(error);
-
-    if (error.response) {
-      console.error(error.response.body)
-    }
-  }
-})();
-};*/
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendWelcomeEmail = async (userEmail) => {
   const msg = {
-    to: userEmail, // Use the parameter passed to the function
-    from: 'sneha8484rao@gmail.com', // Must be a verified sender in SendGrid
+    to: userEmail, 
+    from: 'sneha8484rao@gmail.com', 
     subject: 'Welcome to Netflix Clone',
     text: 'Welcome back! You have successfully signed in.',
     html: '<strong>Welcome back!</strong><p>You have successfully signed in to your account.</p>',
@@ -84,25 +50,7 @@ const sendWelcomeEmail = async (userEmail) => {
   }
 };
 
-/*app.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
 
-  const user = await userModel.findOne({ email, password });
-
-  if (!user) {
-    return res.json({ status: "User not found" });
-  }
-
-  const userPlan = await planModel.findOne({ email });
-
-  res.json({
-    status: "SUCCESS",
-    user: {
-      email: user.email,
-      plan: userPlan ? userPlan.plan : null,
-    },
-  });
-});*/
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -113,7 +61,7 @@ app.post("/signin", async (req, res) => {
     return res.json({ status: "User not found" });
   }
 
-  // --- TRIGGER EMAIL HERE ---
+  
   await sendWelcomeEmail(email); 
 
   const userPlan = await planModel.findOne({ email });
@@ -128,7 +76,7 @@ app.post("/signin", async (req, res) => {
 });
 
 
-/*Razorpay*/
+
 
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
