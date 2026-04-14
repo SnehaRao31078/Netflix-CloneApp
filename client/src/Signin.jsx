@@ -39,22 +39,6 @@ function Signin() {
     });
 };*/
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  axios
-    .post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
-    .then((res) => {
-      if (res.data.status === "OTP_SENT") {
-        
-        navigate("/otp", { state: { email } }); 
-      } else {
-        alert(res.data.status);
-      }
-    })
-    .catch(() => alert("Error connecting to server"));
-};
-
-
 
 
   return (
