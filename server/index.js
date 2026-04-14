@@ -25,7 +25,7 @@ mongoose
   .catch((err) => console.log(err));
 
 
-const sgMail = require('@sendgrid/mail');
+/*const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendWelcomeEmail = async (userEmail) => {
@@ -68,6 +68,57 @@ app.post("/signin", async (req, res) => {
 
   res.json({
     status: "SUCCESS",
+    user: {
+      email: user.email,
+      plan: userPlan ? userPlan.plan : null,
+    },
+  });
+});*/
+
+const sendWelcomeEmail = async (userEmail, otp) => {
+  const msg = {
+    to: userEmail,
+    from: 'sneha8484rao@gmail.com',
+    subject: 'Your OTP for Netflix Clone',
+    text: `Welcome back! Your OTP is ${otp}. It is valid for 10 minutes.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px;">
+        <h2 style="color: #e50914;">Welcome Back!</h2>
+        <p>You have successfully signed in. Use the code below to verify your identity:</p>
+        <h1 style="background: #f4f4f4; padding: 10px; text-align: center; letter-spacing: 5px;">${otp}</h1>
+        <p>This code will expire in 10 minutes.</p>
+      </div>
+    `,
+  };
+
+  try {
+    await sgMail.send(msg);
+    console.log(`OTP sent successfully to ${userEmail}`);
+  } catch (error) {
+    console.error('Error sending email:', error.response?.body || error.message);
+  }
+};
+
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email, password });
+
+  if (!user) {
+    return res.json({ status: "User not found" });
+  }
+
+  // 1. Generate a 6-digit OTP
+  const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  // 2. Pass the OTP to the email function
+  await sendWelcomeEmail(email, generatedOtp); 
+
+  const userPlan = await planModel.findOne({ email });
+
+  res.json({
+    status: "SUCCESS",
+    message: "OTP sent to email",
     user: {
       email: user.email,
       plan: userPlan ? userPlan.plan : null,
