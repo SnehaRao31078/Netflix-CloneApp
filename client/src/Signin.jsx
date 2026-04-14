@@ -4,47 +4,39 @@ import axios from "axios";
 import "./signin.css";
 
 function Signin() {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
- const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
+      .then((res) => {
+        if (res.data.status === "SUCCESS") {
+          localStorage.setItem("userEmail", res.data.user.email);
+          localStorage.setItem("userPlan", res.data.user.plan);
 
-  axios
-    .post(`${import.meta.env.VITE_API_URL}/signin`, { email, password })
-    .then((res) => {
-      console.log(res.data);
-
-      if (res.data.status === "SUCCESS") {
-        const user = res.data.user;
-
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userPlan", user.plan || "");
-
-        if (user.plan) {
           alert("Login successful");
           navigate("/home");
+        } else if (res.data.status === "OTP_SENT") {
+          navigate("/otp", { state: { email } });
         } else {
-          navigate("/subscribe");
+          alert(res.data.status);
         }
-
-      } else {
-        alert(res.data.status);
-      }
-    })
-    .catch(() => {
-      alert("Server is waking up, try again in few seconds");
-    });
-};
-
-
+      })
+      .catch(() => {
+        alert("Connection error. Please try again.");
+      });
+  };
 
   return (
     <div className="signin-page">
       <p className="logo-signin">NETFLIX</p>
-      <Link to="/adminlog" className="admin-btn"> Admin Login</Link>
+      <Link to="/adminlog" className="admin-btn">
+        {" "}
+        Admin Login
+      </Link>
       <div className="signin-wrapper">
         <div className="container">
           <form onSubmit={handleSubmit}>
@@ -60,7 +52,7 @@ function Signin() {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-          <button type="submit">Continue</button> 
+            <button type="submit">Continue</button>
           </form>
           <div className="help">
             <Link to="/signup">Signup if you dont have account</Link>
@@ -74,4 +66,3 @@ function Signin() {
 }
 
 export default Signin;
-

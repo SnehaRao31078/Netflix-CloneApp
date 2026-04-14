@@ -23,56 +23,84 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-
-const sgMail = require('@sendgrid/mail');
+const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendWelcomeEmail = async (userEmail) => {
-  const msg = {
-    to: userEmail, 
-    from: 'sneha8484rao@gmail.com', 
-    subject: 'Welcome to Netflix Clone',
-    text: 'Welcome back! You have successfully signed in.',
-    html: '<strong>Welcome back!</strong><p>You have successfully signed in to your account.</p>',
-  };
-
-  try {
-    await sgMail.send(msg);
-    console.log(`Email sent successfully to ${userEmail}`);
-  } catch (error) {
-    console.error('Error sending email:');
-    if (error.response) {
-      console.error(error.response.body);
-    } else {
-      console.error(error.message);
-    }
-  }
-};
+const otpStore = {};
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await userModel.findOne({ email, password });
+  try {
+    const user = await userModel.findOne({ email, password });
 
-  if (!user) {
-    return res.json({ status: "User not found" });
+    if (!user) {
+      return res.json({ status: "User not found" });
+    }
+    const userPlan = await planModel.findOne({ email });
+
+    if (userPlan && userPlan.plan) {
+      return res.json({
+        status: "SUCCESS",
+        user: {
+          email: user.email,
+          plan: userPlan.plan,
+        },
+      });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    otpStore[email] = {
+      otp,
+      expiresAt: Date.now() + 5 * 60 * 1000,
+    };
+
+    const msg = {
+      to: email,
+      from: "sneha8484rao@gmail.com",
+      subject: "Your Netflix Clone OTP",
+      html: `<h2>Your OTP is: ${otp}</h2>`,
+    };
+
+    await sgMail.send(msg);
+    res.json({ status: "OTP_SENT", email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "Server Error" });
   }
-
-  await sendWelcomeEmail(email); 
-
-  const userPlan = await planModel.findOne({ email });
-
-  res.json({
-    status: "SUCCESS",
-    user: {
-      email: user.email,
-      plan: userPlan ? userPlan.plan : null,
-      
-    },
-  });
 });
 
+app.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
 
+  const storedData = otpStore[email];
+
+  if (!storedData) {
+    return res.json({ status: "OTP expired or not requested" });
+  }
+
+  if (Date.now() > storedData.expiresAt) {
+    delete otpStore[email];
+    return res.json({ status: "OTP expired" });
+  }
+
+  if (storedData.otp === otp.toString()) {
+    delete otpStore[email];
+
+    const userPlan = await planModel.findOne({ email });
+
+    return res.json({
+      status: "SUCCESS",
+      user: {
+        email: email,
+        plan: userPlan ? userPlan.plan : null,
+      },
+    });
+  } else {
+    return res.json({ status: "Invalid OTP" });
+  }
+});
 
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
@@ -139,7 +167,6 @@ app.post("/payment/verify", async (req, res) => {
   }
 });
 
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -157,7 +184,6 @@ const cloudinarystorage = new CloudinaryStorage({
 });
 
 const upload = multer({ storage: cloudinarystorage });
-
 
 app.post("/signup", async (req, res) => {
   try {
@@ -254,7 +280,6 @@ app.put(
   },
 );
 
-
 app.delete("/products/:id", async (req, res) => {
   try {
     await productModel.findByIdAndDelete(req.params.id);
@@ -295,4 +320,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
-

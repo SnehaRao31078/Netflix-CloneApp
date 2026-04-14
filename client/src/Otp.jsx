@@ -1,4 +1,4 @@
-/*import { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,54 +7,46 @@ function Otp() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
-  
-
-const verifyOtp = (e) => {
+  const verifyOtp = (e) => {
     e.preventDefault();
-
-    axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, { email, otp })
-      .then(res => {
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/verify-otp`, { email, otp })
+      .then((res) => {
         if (res.data.status === "SUCCESS") {
-        
-         
           localStorage.setItem("userEmail", email);
-          localStorage.setItem("userPlan", res.data.plan || "");
+          localStorage.setItem("userPlan", res.data.user.plan || "");
 
-          
-          if (res.data.plan) {
-            navigate("/home"); 
+          if (res.data.user.plan) {
+            navigate("/home");
           } else {
-            navigate("/subscribe"); 
+            navigate("/subscribe");
           }
         } else {
           alert(res.data.status);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-
-
-
- 
   return (
     <div style={{ textAlign: "center", marginTop: "150px" }}>
       <p className="logo-p">NETFLIX</p>
       <h2>Enter OTP</h2>
       <form onSubmit={verifyOtp}>
-        <input 
+        <input
           className="otp"
           type="text"
           placeholder="Enter OTP"
           onChange={(e) => setOtp(e.target.value)}
         />
-        <br/><br/>
-        <button type="submit" className="otp-btn" >Verify OTP</button>
-       
+        <br />
+        <br />
+        <button type="submit" className="otp-btn">
+          Verify OTP
+        </button>
       </form>
     </div>
   );
 }
 
-export default Otp; */
-
+export default Otp;
