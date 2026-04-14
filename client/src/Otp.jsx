@@ -48,7 +48,7 @@ const verifyOtp = (e) => {
         if (res.data.plan) {
           navigate("/home"); 
         } else {
-          navigate("/otp"); 
+          navigate("/subscribe"); 
         }
       } else {
         alert(res.data.status); 

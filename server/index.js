@@ -71,6 +71,7 @@ app.post("/signin", async (req, res) => {
     user: {
       email: user.email,
       plan: userPlan ? userPlan.plan : null,
+      
     },
   });
 });*/
