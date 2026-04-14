@@ -25,10 +25,10 @@ mongoose
   .catch((err) => console.log(err));
 
 
-/*const sgMail = require('@sendgrid/mail');
+const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendWelcomeEmail = async (userEmail) => {
+/*const sendWelcomeEmail = async (userEmail) => {
   const msg = {
     to: userEmail, 
     from: 'sneha8484rao@gmail.com', 
@@ -108,10 +108,10 @@ app.post("/signin", async (req, res) => {
     return res.json({ status: "User not found" });
   }
 
-  // 1. Generate a 6-digit OTP
+ 
   const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
-  // 2. Pass the OTP to the email function
+
   await sendWelcomeEmail(email, generatedOtp); 
 
   const userPlan = await planModel.findOne({ email });
