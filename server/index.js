@@ -28,7 +28,7 @@ mongoose
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-/*const sendWelcomeEmail = async (userEmail) => {
+const sendWelcomeEmail = async (userEmail) => {
   const msg = {
     to: userEmail, 
     from: 'sneha8484rao@gmail.com', 
@@ -49,8 +49,6 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     }
   }
 };
-
-
 
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -74,101 +72,7 @@ app.post("/signin", async (req, res) => {
       
     },
   });
-});*/
-
-const sendWelcomeEmail = async (userEmail, otp) => {
-  const msg = {
-    to: userEmail,
-    from: 'sneha8484rao@gmail.com',
-    subject: 'Your OTP for Netflix Clone',
-    text: `Welcome back! Your OTP is ${otp}. It is valid for 10 minutes.`,
-    html: `
-      <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px;">
-        <h2 style="color: #e50914;">Welcome Back!</h2>
-        <p>You have successfully signed in. Use the code below to verify your identity:</p>
-        <h1 style="background: #f4f4f4; padding: 10px; text-align: center; letter-spacing: 5px;">${otp}</h1>
-        <p>This code will expire in 10 minutes.</p>
-      </div>
-    `,
-  };
-
-  try {
-    await sgMail.send(msg);
-    console.log(`OTP sent successfully to ${userEmail}`);
-  } catch (error) {
-    console.error('Error sending email:', error.response?.body || error.message);
-  }
-};
-
-/*app.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await userModel.findOne({ email, password });
-
-  if (!user) {
-    return res.json({ status: "User not found" });
-  }
-
- 
-  const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-
-
-  await sendWelcomeEmail(email, generatedOtp); 
-
-  const userPlan = await planModel.findOne({ email });
-
-  res.json({
-    status: "SUCCESS",
-    message: "OTP sent to email",
-    user: {
-      email: user.email,
-      plan: userPlan ? userPlan.plan : null,
-    },
-  });
-});*/
-
-app.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userModel.findOne({ email, password });
-
-  if (!user) return res.json({ status: "User not found" });
-
-  const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-  
-  // Save OTP and Expiry (e.g., 10 mins) to the database
-  user.otp = generatedOtp;
-  user.otpExpires = Date.now() + 10 * 60 * 1000; 
-  await user.save();
-
-  await sendWelcomeEmail(email, generatedOtp); 
-
-  res.json({ status: "SUCCESS", email: user.email });
 });
-
-app.post("/verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await userModel.findOne({ email });
-
-  if (!user || user.otp !== otp || user.otpExpires < Date.now()) {
-    return res.json({ status: "Invalid or expired OTP" });
-  }
-
-  
-  user.otp = null;
-  user.otpExpires = null;
-  await user.save();
-
-  // Check for plan
-  const userPlan = await planModel.findOne({ email });
-
-  res.json({
-    status: "SUCCESS",
-    plan: userPlan ? userPlan.plan : null, // Returns the plan name or null
-  });
-});
-
-
-
 
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
