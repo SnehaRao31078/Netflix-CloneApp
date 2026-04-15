@@ -6,6 +6,7 @@ function Home() {
   const [movies, setMovies] = useState([]);
   const [banner, setBanner] = useState(null);
   const navigate = useNavigate();
+    const[showModal,setShowModal]=useState(false);
   const currentUserPlan = localStorage.getItem("userPlan") || "none";
   useEffect(() => {
     axios
@@ -53,8 +54,28 @@ function Home() {
   const scrollRight = (id) => {
     document.getElementById(id).scrollLeft += 300;
   };
+  useEffect(() => {
+    setShowModal(true);
+  },[]);
+
 
   return (
+    <>
+    {showModal&&(
+    <div className="popup">
+      <div className="popup-content">
+        <div>
+          <span className="close" onClick={()=>setShowModal(false)}>X</span>
+        </div>
+        <h3>Would u like to watch here?</h3>
+        <p>Upgrade your plan to start watching here.With Your current plan.you can watch on your phone and tablet </p>
+        <div className="modal-buttons">
+        <button className="not-nows" onClick={()=>setShowModal(false)}>Not Now</button> 
+        <button className="see-plans" onClick={()=>navigate("/subscribe")}>See all plans</button>
+         </div>
+  </div>
+  </div>
+       ) }
     <div className="home">
       <div className="hero">
    <iframe
@@ -228,6 +249,7 @@ function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
