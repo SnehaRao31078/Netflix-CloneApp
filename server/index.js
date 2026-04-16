@@ -14,6 +14,17 @@ const productModel = require("./models/products");
 
 const planModel = require("./models/plans");
 
+const PDFDocument = require("pdfkit");
+const fs= require("fs");
+
+const doc = new PDFDocument();
+doc.pipe(fs.createWriteStream("receipt.pdf"));
+doc.fontSize(25).text("Payment Reciept",{align:"center"});
+doc.end()
+
+pathToAttachment = `${__dirname}/receipt.pdf`;
+attachment = fs.readFileSync(pathToAttachment).toString("base64");
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -181,6 +192,14 @@ app.post("/payment/verify", async (req, res) => {
       </tbody>
 
       </table>`,
+      attachments:[
+        {
+          content:attachment,
+          filename:"receipt.pdf",
+          type:"application/pdf",
+          disposition:"attachment"
+        }
+      ]
           };
           await sgMail.send(msg);
         } catch (err) {
