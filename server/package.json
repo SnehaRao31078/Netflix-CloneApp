@@ -29,6 +29,7 @@
     "nodemon": "^3.1.11",
     "path": "^0.12.7",
     "pdfkit": "^0.18.0",
+    "pdfkit-table": "^0.1.99",
     "razorpay": "^2.9.6",
     "react-dropdown-select": "^4.12.2",
     "resend": "^6.9.4"
