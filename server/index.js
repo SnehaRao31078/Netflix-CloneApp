@@ -136,7 +136,7 @@ const path = require("path");
 
 const fs = require("fs");
 const PDFDocument = require("pdfkit-table");
-const path = require("path");
+
 
 const sendReceipt = async (email, plan, price, paymentId) => {
 
