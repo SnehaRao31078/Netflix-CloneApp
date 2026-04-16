@@ -14,8 +14,6 @@ const productModel = require("./models/products");
 
 const planModel = require("./models/plans");
 
-
-
 const app = express();
 app.use(express.json());
 app.use(cors());
