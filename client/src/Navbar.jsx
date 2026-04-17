@@ -127,7 +127,7 @@ function Nav() {
               <div className="menu-row small">
                 <i className="fa-regular fa-user"></i>
 
-                <span>Account</span>
+                <Link to="/panel"> <span>Account</span></Link> 
               </div>
 
               <div className="menu-row small">
