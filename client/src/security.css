@@ -1,0 +1,50 @@
+
+.security-container {
+  background-color: #141414;   
+  min-height: 100vh;           
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;         
+  justify-content: center;     
+}
+
+
+.security-container h1 {
+  margin-bottom: 20px;
+}
+
+
+.security-container form {
+  background-color: #1f1f1f;   
+  padding: 20px;
+  border-radius: 10px;
+
+  width: 500px;                
+}
+
+
+.security-container input {
+  width: 100%;                 
+  padding: 8px;
+  margin-bottom: 10px;
+
+  border-radius: 5px;
+  border: none;
+}
+
+
+.security-container button {
+  width: 100%;                 
+  padding: 8px;
+
+  background-color: red;
+  color: white;
+
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+

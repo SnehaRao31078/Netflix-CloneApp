@@ -16,7 +16,10 @@ import Player from "./Player";
 import Otp from "./Otp";
 import Subscription from "./Subscription";
 import Plan from "./Planform";
-import ViewScription  from "./ViewSubscription";
+import ViewScription from "./ViewSubscription";
+import UserPanel from "./UserPanel";
+import Security from "./Security";
+import Membership from "./Membership";
 function App() {
   return (
     <BrowserRouter>
@@ -33,12 +36,15 @@ function App() {
         <Route path="/edit/:id" element={<Addproduct />} />
         <Route path="/delete/:id" element={<ViewProducts />} />
         <Route path="/player/:id" element={<Player />} />
-    <Route path="/otp" element={<Otp />} />
-       
+        <Route path="/otp" element={<Otp />} />
+
         <Route path="/subscribe" element={<Subscription />} />
         <Route path="/plan" element={<Plan />} />
-        
-        <Route path="/subview" element={<ViewScription/>}/>
+
+        <Route path="/subview" element={<ViewScription />} />
+        <Route path="/panel" element={<UserPanel />} />
+        <Route path="/security" element={<Security />} />
+        <Route path="/membership" element={<Membership />} />
 
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
