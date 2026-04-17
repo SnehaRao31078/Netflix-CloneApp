@@ -358,14 +358,7 @@ app.delete("/products/:id", async (req, res) => {
   }
 });
 
-/*app.post("/plans", async (req, res) => {
-  try {
-    const data = await planModel.create(req.body);
-    res.json({ success: true, message: "Payment successful", data });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error" });
-  }
-});*/
+
 
 app.get("/plans", async (req, res) => {
   try {
@@ -376,14 +369,7 @@ app.get("/plans", async (req, res) => {
   }
 });
 
-/*app.get("/plans/:id", async (req, res) => {
-  try {
-    const data = await planModel.findById(req.params.id);
-    res.json(data);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});*/
+
 
 app.put("/update-user", async (req, res) => {
   try {
