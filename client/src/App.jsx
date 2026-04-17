@@ -17,7 +17,7 @@ import Otp from "./Otp";
 import Subscription from "./Subscription";
 import Plan from "./Planform";
 import ViewScription from "./ViewSubscription";
-import UserPanel from "./UserPanel";
+import UserDash from "./Userpanel";
 import Security from "./Security";
 import Membership from "./Membership";
 function App() {
