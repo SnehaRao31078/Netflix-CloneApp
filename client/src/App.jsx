@@ -42,7 +42,7 @@ function App() {
         <Route path="/plan" element={<Plan />} />
 
         <Route path="/subview" element={<ViewScription />} />
-        <Route path="/panel" element={<Userpanel />} />
+        <Route path="/panel" element={<UserDash />} />
         <Route path="/security" element={<Security />} />
         <Route path="/membership" element={<Membership />} />
 
