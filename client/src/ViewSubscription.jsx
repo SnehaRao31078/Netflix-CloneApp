@@ -26,8 +26,6 @@ function ViewScription()
                 <thead>
 <tr>
     <th>Email </th>
-    <th>Card Details</th>
-    <th>Cardholder name</th>
     <th>Country</th>
     <th>Plan</th>
     <th>Price</th>
@@ -41,8 +39,7 @@ function ViewScription()
 
             <tr key={subscribe._id}>
                 <td>{subscribe.email}</td>
-                <td>{subscribe.card}</td>
-                <td>{subscribe.holder}</td>
+                
                 <td>{subscribe.country}</td>
                 <td>{subscribe.plan}</td>
                 <td>{subscribe.price}</td>
