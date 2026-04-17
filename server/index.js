@@ -376,14 +376,14 @@ app.get("/plans", async (req, res) => {
   }
 });
 
-app.get("/plans/:id", async (req, res) => {
+/*app.get("/plans/:id", async (req, res) => {
   try {
     const data = await planModel.findById(req.params.id);
     res.json(data);
   } catch (err) {
     res.status(500).json(err);
   }
-});
+});*/
 
 app.put("/update-user", async (req, res) => {
   try {
