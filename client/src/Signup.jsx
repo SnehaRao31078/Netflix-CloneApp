@@ -21,19 +21,7 @@ const handleSubmit = (e) => {
       email,
       password,
     })
-    /*.then((res) => {
-  console.log(res.data);
-
-  if (res.data.status === "SUCCESS") {
-    alert(res.data.message);
-    navigate("/");
    
-
-    localStorage.setItem("userEmail", email);
-
-   
-  }
-})*/
 .then((res) => {
   console.log(res.data);
 
