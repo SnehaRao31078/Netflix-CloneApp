@@ -27,10 +27,6 @@ function Player() {
     return <h2>Loading...</h2>;
   }
 
-  /*const toogleControls = () => {
-    setShowControls(!showControls);
-
-  };*/
   const toogleControls = () => {
   setShowControls(true);
 
