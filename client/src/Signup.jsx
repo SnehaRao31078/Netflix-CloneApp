@@ -37,7 +37,7 @@ const handleSubmit = (e) => {
 })
     .catch((err) => {
       console.log(err);
-      alert("Server not responding");
+      toast.error("Server not responding");
     });
 };
   return (
