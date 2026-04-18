@@ -163,12 +163,19 @@ const sendReceipt = async (email, plan, price, paymentId, basePrice, gstAmount, 
       title: "",
       headers: ["Email", "Plan", "Base Price", "GST (18%)", "Total", "Payment ID"],
       rows: [
-        [email, plan, `₹${basePrice}`, `₹${gstAmount}`, `₹${total}`, paymentId],
+        [email, plan, `Rs.${basePrice}`, `Rs.${gstAmount}`, `Rs.${total}`, paymentId],
       ],
     };
 
   
-    await doc.table(table);
+    /*await doc.table(table);*/
+
+    await doc.table(table, {
+  x: 100,
+  width: 500,
+  padding: 8,
+  columnSpacing: 10,
+});
 
     
     doc.end();
