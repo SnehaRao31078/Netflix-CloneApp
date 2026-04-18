@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useRef} from "react";
 import axios from "axios";
-import { useRef } from "react";
+
 import "./player.css";
 function Player() {
   const { id } = useParams();
@@ -31,7 +31,7 @@ function Player() {
     setShowControls(!showControls);
 
   };*/
-  const toggleControls = () => {
+  const toogleControls = () => {
   setShowControls(true);
 
   if (videoRef.current) {
