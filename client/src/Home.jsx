@@ -38,14 +38,7 @@ function Home() {
       .catch((err) => console.log(err));
   }, [currentUserPlan]);
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/banners`)
-      .then((res) => {
-        setBanner(res.data[0]);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  
 
   const scrollLeft = (id) => {
     document.getElementById(id).scrollLeft -= 300;
