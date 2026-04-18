@@ -55,8 +55,14 @@ function Home() {
     document.getElementById(id).scrollLeft += 300;
   };
   useEffect(() => {
+  const userPlan = (localStorage.getItem("userPlan") || "none").toLowerCase();
+
+  if (userPlan === "basic" || userPlan === "standard") {
     setShowModal(true);
-  },[]);
+  } else {
+    setShowModal(false);
+  }
+}, []);
 
 
   return (
