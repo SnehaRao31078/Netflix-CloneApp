@@ -38,13 +38,13 @@ function UserDash() {
   const navigate = useNavigate();
   return (
     <>
-      <div class="car">
+      <div className="car">
         <img src="img_avatar.png" alt="Avatar" style="width:100%" />
-        <div class="containe" onClick={() => navigate("/security")}>
+        <div className="containe" onClick={() => navigate("/security")}>
           <h3>Security Settings</h3>
         </div>
 
-        <div class="containe" onClick={() => navigate("/membership")}>
+        <div className="containe" onClick={() => navigate("/membership")}>
           <h3>Membership & Billing</h3>
         </div>
       </div>
