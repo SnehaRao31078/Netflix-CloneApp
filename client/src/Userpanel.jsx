@@ -39,7 +39,7 @@ function UserDash() {
   return (
     <>
       <div className="car">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%" />
+        <img src="img_avatar.png" alt="Avatar" style={{ width: "100%" }} />
         <div className="containe" onClick={() => navigate("/security")}>
           <h3>Security Settings</h3>
         </div>
