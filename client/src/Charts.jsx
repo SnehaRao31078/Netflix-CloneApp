@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import {Pie,PieChart,Cell,ToolTip, ResponsiveContainer} from "recharts";
+import {Pie,PieChart,Cell,Tooltip, ResponsiveContainer} from "recharts";
 import axios from "axios";
 function Charts(){
     const [data,setData]=useState([]);
-    
+
 useEffect(()=>
 {
 const fetchedata =async ()=>
