@@ -3,7 +3,8 @@ import {Pie,PieChart,Cell,ToolTip, ResponsiveContainer} from "recharts";
 import axios from "axios";
 function Charts(){
     const [data,setData]=useState([]);
-   useEffect(()=>
+    
+useEffect(()=>
 {
 const fetchedata =async ()=>
 {
