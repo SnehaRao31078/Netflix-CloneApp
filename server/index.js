@@ -141,72 +141,7 @@ app.post("/payment/process", async (req, res) => {
 const path = require("path");
 
 const fs = require("fs");
-//const PDFDocument = require("pdfkit-table");
 
-
-/*const sendReceipt = async (email, plan, price, paymentId, basePrice, gstAmount, total) => {
-
-  const filePath = path.join(__dirname, `receipt-${paymentId}.pdf`);
-
- 
-  let doc = new PDFDocument({ margin: 30, size: "A4" });
-
-  
-  doc.pipe(fs.createWriteStream(filePath));
-
-  ;(async function createTable(){
-
-    
-    doc.fontSize(18).text("Payment Receipt", { align: "center" });
-    doc.moveDown();
-
-   
-    const table = {
-      title: "",
-      headers: ["Email", "Plan", "Base Price", "GST (18%)", "Total", "Payment ID"],
-      rows: [
-        [email, plan, `Rs.${basePrice}`, `Rs.${gstAmount}`, `Rs.${total}`, paymentId],
-      ],
-    };
-
-  
-    await doc.table(table);
-
-    await doc.table(table, {
- columnsSize: [125, 80, 80, 80, 80, 150],
-});
-
-    
-    doc.end();
-
-  })();
-
-  
-  setTimeout(async () => {
-    try {
-      const msg = {
-        to: email,
-        from: "sneha8484rao@gmail.com",
-        subject: "Your Payment Receipt",
-        text: "Please find your receipt attached.",
-        attachments: [
-          {
-            content: fs.readFileSync(filePath).toString("base64"),
-            filename: `receipt-${paymentId}.pdf`,
-            type: "application/pdf",
-            disposition: "attachment",
-          },
-        ],
-      };
-
-      await sgMail.send(msg);
-
-    } catch (err) {
-      console.log("Error sending email:", err);
-    }
-  }, 500);
-};
-*/
 
 const sendReceipt = async (data) => {
   try {
@@ -289,7 +224,7 @@ app.post("/payment/verify", async (req, res) => {
     paymentId: razorpay_payment_id,
   });
       
-      //await sendReceipt(email, plan, price, razorpay_payment_id, basePrice.toFixed(2), gstAmount.toFixed(2), total.toFixed(2));
+      
      await sendReceipt({
   email,
   plan,

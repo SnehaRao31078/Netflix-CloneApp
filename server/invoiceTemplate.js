@@ -19,8 +19,11 @@ module.exports = (data) => {
       }
 
       .company {
-        font-size: 24px;
-        font-weight: bold;
+        font-size: 28px;
+  font-weight: bold;
+  color: #e50914; /* Netflix red */
+  letter-spacing: 2px;
+
       }
 
       .address {
@@ -82,7 +85,7 @@ module.exports = (data) => {
 
   <body>
 
-    <!-- HEADER -->
+    
     <table class="header-table">
       <tr>
         <td class="company">Netflix Clone</td>
@@ -93,9 +96,9 @@ module.exports = (data) => {
       </tr>
     </table>
 
-    <h2>Invoice</h2>
+    <h2>Payment Receipt</h2>
 
-    <!-- CUSTOMER INFO -->
+   
     <table class="info-table">
       <tr>
         <td>
@@ -110,7 +113,7 @@ module.exports = (data) => {
       </tr>
     </table>
 
-    <!-- TABLE -->
+   
     <table>
       <tr>
         <th>Item</th>
@@ -129,7 +132,7 @@ module.exports = (data) => {
       </tr>
     </table>
 
-    <!-- TOTALS -->
+    
     <div class="totals">
       <div>
         <span>Subtotal</span>
