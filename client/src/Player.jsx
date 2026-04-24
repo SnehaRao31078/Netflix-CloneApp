@@ -35,33 +35,7 @@ function Player() {
   }
 };
 
-  /*return (
-    <div style={{ background: "black", color: "white", padding: "30px" }}>
-      <button onClick={() => navigate("/home")} className="player-btn">Back</button>
 
-      <h1>{movie.title}</h1>
-
-    <video
-  ref={videoRef}
-  width="800"
-  height="450"
-    controls={showControls}
-  poster={movie.file} 
-  onClick={toogleControls}
->
-  <source
-    src={movie.video}
-    type="video/mp4"
-  />
-  Your browser does not support the video tag.
-</video>
-
-      <p className="movie-description">{movie.description}</p>
-       <p className="movie-language">{movie.language}</p>
-    </div>
-  );
-}
-*/
 return (
   <div className="player-container" style={{ background: "black", color: "white", padding: "30px", minHeight: "100vh" }}>
     
