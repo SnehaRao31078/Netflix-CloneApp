@@ -35,7 +35,7 @@ function Signin() {
     <div className="signin-page">
       <p className="logo-signin">NETFLIX</p>
       <Link to="/adminlog" className="admin-btn">
-        {" "}
+        
         Admin Login
       </Link>
       <div className="signin-wrapper">
