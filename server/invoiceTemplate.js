@@ -21,7 +21,7 @@ module.exports = (data) => {
       .company {
         font-size: 28px;
   font-weight: bold;
-  color: #e50914; /* Netflix red */
+  color: #e50914;
   letter-spacing: 2px;
 
       }

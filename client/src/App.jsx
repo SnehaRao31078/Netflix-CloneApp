@@ -30,8 +30,7 @@ function App() {
         <Route path="/" element={<Signin />} />
 
         <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot" element={<Forgot />} />
-        <Route path="/learn" element={<Learn />} />
+       
         <Route path="/adminlog" element={<Adminlog />} />
         <Route path="/admindash" element={<Dash />} />
         <Route path="/addmovies" element={<Addproduct />} />

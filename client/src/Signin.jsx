@@ -57,8 +57,7 @@ function Signin() {
           </form>
           <div className="help">
             <Link to="/signup">Signup if you dont have account</Link>
-            <Link to="/learn">Learn more about sign-in</Link>
-            <Link to="/forgot">Forgot email or mobile number?</Link>
+           
           </div>
         </div>
       </div>
