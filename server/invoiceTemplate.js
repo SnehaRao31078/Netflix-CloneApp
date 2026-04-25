@@ -104,7 +104,7 @@ module.exports = (data) => {
         <td>
           <p><b>Invoice ID:</b> ${data.paymentId}</p>
           <p><b>Date:</b> ${new Date().toLocaleDateString()}</p>
-          <p><b>Balance Due:</b> ₹${Number(data.price).toFixed(2)}</p>
+          <p><b>Amount:</b> ₹${Number(data.price).toFixed(2)}</p>
         </td>
         <td class="right">
           <p><b>${data.email}</b></p>
@@ -143,7 +143,7 @@ module.exports = (data) => {
         <span>₹${Number(data.gstAmount).toFixed(2)}</span>
       </div>
       <div class="bold">
-        <span>Balance Due</span>
+        <span>Total Amount</span>
         <span>₹${Number(data.price).toFixed(2)}</span>
       </div>
     </div>
