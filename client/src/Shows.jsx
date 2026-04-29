@@ -111,10 +111,10 @@ function Shows() {
           </div>
 
           <div className="hero-content">
-            <h1 className="title">Rook (2020)</h1>
+            <h1 className="title">Dhurandhar</h1>
 
             <p className="description">
-              Rook (2020) is a crime thriller about a bar owner
+              The Revenge (Dhurandhar 2) is a 2026 Indian Hindi-language spy action-thriller directed by Aditya Dhar and starring Ranveer Singh, released in theaters on March 19, 2026. As the sequel to the 2025 film, it follows an undercover agent navigating Karachi's criminal underworld while addressing the 26/11 attacks, aiming for a massive pan-India release in five languages.
             </p>
 
             <div className="buttons">
