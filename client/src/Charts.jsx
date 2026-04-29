@@ -1,80 +1,63 @@
-import { useEffect,useState } from "react";
-import {Pie,PieChart,Cell,Tooltip, ResponsiveContainer} from "recharts";
+import { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import axios from "axios";
-function Charts(){
-    const [data,setData]=useState([]);
 
-useEffect(()=>
-{
-const fetchedata =async ()=>
-{
-    try
-    {
-        let basic=0;
-        let standard=0;
-        let premium=0;
-       const res=await axios.get(`${import.meta.env.VITE_API_URL}/plans`);
-       const FormattedData=res.data.map(item=>
-       ({
-          name:item.plan,
-          value:item.price,
-          plan:item.plan.toLowerCase()
+function Charts() {
+  const [data, setData] = useState([]);
 
-       }));
-       if(plan==="basic")
-       {
-          basic++;
-       }
-       else if(plan==="standard")
-       {
-        standard++;
-       }
-       else if(plan==="premium")
-       {
-        premium++;
-       }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/plans`);
 
-       else
-       {
-        console.log("No plans");
-       }
+        let basic = 0;
+        let standard = 0;
+        let premium = 0;
+
        
-       setData(FormattedData);
+        res.data.forEach((item) => {
+          if (item.plan.toLowerCase() === "basic") basic++;
+          else if (item.plan.toLowerCase() === "standard") standard++;
+          else if (item.plan.toLowerCase() === "premium") premium++;
+        });
 
-    }
-    catch(error)
-    {
-     console.error("Error Fetching MongoDB data")   ;
-    }
-};
-fetchedata();
+        // set chart data
+        setData([
+          { name: "Basic", value: basic },
+          { name: "Standard", value: standard },
+          { name: "Premium", value: premium },
+        ]);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
 
-},[]);
+    fetchData();
+  }, []);
 
-const COLORS=["#0088FE","#00C49F","#FF8828"];
- return(
-<div style={{width:"100%", height:400}}>
-<ResponsiveContainer>
-<PieChart width={200} height={200}>
-<Pie data={data}  value="plan"
-cx="50%"
-cy="50%"
-outerRadius={100}
-fill="#8884d8"
-label
->
-    {data.map((entry,index)=>
-    {
-        <Cell key={`cell-${index}`}
-        fill={COLORS[index % COLORS.length]}></Cell>
-    })}
-    <Tooltip></Tooltip>
+  const COLORS = ["#0088FE", "#00C49F", "#FF8828"];
 
-
-</Pie>
-</PieChart>
-</ResponsiveContainer>
-</div>
-    );
+  return (
+    <div style={{ width: "100%", height: 400 }}>
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+          >
+            {data.map((entry, index) => (
+              <Cell key={index} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }
+
 export default Charts;
