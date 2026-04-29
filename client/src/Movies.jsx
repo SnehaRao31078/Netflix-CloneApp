@@ -68,25 +68,10 @@ const handleMovieClick = async (movieId) => {
   <div className="tv-left">
     <h2>Movies</h2>
 
-    <div className="genre-dropdown">
-      <select>
-        <option>Genres</option>
-        <option>Oddballs and out casts</option>
-        <option>Horror Movies</option>
-        <option>Indian social issue dramas</option>
-        <option>Action Thrillers</option>
-      </select>
-    </div>
+    
   </div>
 
-  <div className="view-icons">
-    <div className="icon-box">
-      <i className="fa-solid fa-bars"></i>
-    </div>
-    <div className="icon-box">
-      <i className="fa-solid fa-table-cells"></i>
-    </div>
-  </div>
+ 
 </div>
 
 
