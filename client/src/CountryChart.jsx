@@ -9,38 +9,38 @@ import {
 } from "recharts";
 import axios from "axios";
 
-function Charts() {
+function CountryChart() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlans = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/plans`);
 
-        let basic = 0;
-        let standard = 0;
-        let premium = 0;
+        let countryCount = {};
 
-        res.data.forEach((item) => {
-          if (item.plan.toLowerCase() === "basic") basic++;
-          else if (item.plan.toLowerCase() === "standard") standard++;
-          else if (item.plan.toLowerCase() === "premium") premium++;
-        });
+        
 
-        setData([
-          { name: "Basic", value: basic },
-          { name: "Standard", value: standard },
-          { name: "Premium", value: premium },
-        ]);
+        const chartData = Object.keys(countryCount).map((country) => ({
+          name: country,
+          value: countryCount[country],
+        }));
+
+        setData(chartData);
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.log(error);
       }
     };
 
-    fetchData();
+    fetchPlans();
   }, []);
 
-  const COLORS = ["#0088FE", "#00C49F", "#FF8828"];
+  const COLORS = [
+    
+    "#FFBB28",
+    "#FF8042",
+    
+  ];
 
   return (
     <div style={{ width: "100%", height: 450 }}>
@@ -51,6 +51,7 @@ function Charts() {
             dataKey="value"
             cx="50%"
             cy="45%"
+            innerRadius={60}
             outerRadius={100}
             label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
           >
@@ -63,17 +64,11 @@ function Charts() {
           </Pie>
 
           <Tooltip />
-
-      
-          <Legend
-            verticalAlign="right"
-            align="center"
-            iconType="square"
-          />
+          <Legend verticalAlign="right" />
         </PieChart>
       </ResponsiveContainer>
     </div>
   );
 }
 
-export default Charts;
+export default CountryChart;
