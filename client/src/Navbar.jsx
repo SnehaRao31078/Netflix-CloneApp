@@ -84,8 +84,7 @@ function Nav() {
                 ))}
           </div>
         </div>
-        <span>Children</span>
-        <i className="fas fa-bell icon"></i>
+        
 
         <div className="profile" onClick={() => setOpen(!open)}>
           <img src="/profile.png" className="top-profile" />
@@ -97,24 +96,10 @@ function Nav() {
                 <span>{user}</span>
               </div>
 
-              <div className="menu-row">
-                <img src="/kids.png" />
-                <span>Kids</span>
-              </div>
-
+              
               <div className="divider"></div>
 
-              <div className="menu-row small">
-                <i className="fa-regular fa-pen-to-square"></i>
-
-                <span>Manage Profiles</span>
-              </div>
-
-              <div className="menu-row small">
-                <i className="fa-solid fa-right-left"></i>
-
-                <span>Transfer Profile</span>
-              </div>
+             
 
               <div className="menu-row small">
                 <i className="fa-regular fa-user"></i>
@@ -122,12 +107,7 @@ function Nav() {
                 <Link to="/panel"> <span>Account</span></Link> 
               </div>
 
-              <div className="menu-row small">
-                <i className="fa-regular fa-circle-question"></i>
-
-                <span>Help Centre</span>
-              </div>
-
+            
               <div className="divider"></div>
 
               <div className="signout" onClick={handleLogout}>
