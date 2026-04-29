@@ -18,7 +18,7 @@ const fetchedata =async ()=>
        ({
           name:item.plan,
           value:item.price,
-          plan=item.plan.toLowerCase()
+          plan:item.plan.toLowerCase()
 
        }));
        if(plan==="basic")
