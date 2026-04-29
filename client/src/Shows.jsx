@@ -94,14 +94,15 @@ function Shows() {
       <div className="home">
         <div className="hero">
           <iframe
-  className="hero-video"
-  src="https://www.youtube.com/embed/r8O3URprq1M?si=a2du2gYVSR-S7PTN?autoplay=1&mute=1&controls=0&loop=1&playlist=hs3w32RG8L8"
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/r8O3URprq1M?autoplay=1&mute=1&controls=0&loop=1&playlist=r8O3URprq1M"
   title="YouTube video player"
-  frameBorder="0"
+  frameborder="0"
   allow="autoplay; encrypted-media"
-  allowFullScreen
+  allowfullscreen
 ></iframe>
-https://www.youtube.com/embed/r8O3URprq1M?si=a2du2gYVSR-S7PTN
+
           <div className="overlay"></div>
 
           <div className="tv-topbar">
