@@ -463,6 +463,26 @@ app.get("/dashboard-counts", async (req, res) => {
 });
 
 
+app.get("/plans", async (req, res) => {
+  try {
+    const plans = await planModel.find();
+
+    res.json(plans);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Failed to fetch plans" });
+  }
+});
+app.get("/products", async (req, res) => {
+  try {
+    const products = await productModel.find();
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
