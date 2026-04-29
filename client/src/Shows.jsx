@@ -83,7 +83,7 @@ function Shows() {
 
           <div className="row-posters" id="row1">
             {shows
-              .filter((movie) => movie.category === "gems-for-you ")
+              .filter((movie) => movie.category === "gems-for-you")
               .map((movie) => (
                 <img
                   key={movie._id}
