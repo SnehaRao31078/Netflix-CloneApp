@@ -15,7 +15,7 @@ function CountryChart() {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/plans");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/plans`);
 
         let countryCount = {};
 
@@ -48,9 +48,7 @@ function CountryChart() {
   const COLORS = [
     "#FFBB28",
     "#FF8042",
-    "#0088FE",
-    "#00C49F",
-    "#AF19FF",
+   
   ];
 
   return (
