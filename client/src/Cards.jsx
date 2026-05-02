@@ -27,46 +27,46 @@ function Cards() {
 
   return (
     <main className="main-container">
-      {/* DASHBOARD TITLE */}
+      
       <div className="main-title">
         <h3>DASHBOARD</h3>
       </div>
 
-      {/* TOP SUMMARY CARDS */}
+      
       <div className="main-cards">
-        {/* MOVIES CARD */}
+       
         <div className="cards">
           <div className="cards-inner">
             <h3>
               <span>
                 <i className="fa-solid fa-film"></i>
-              </span>{" "}
+              </span>
               Number of Movies
             </h3>
             <p>{counts.totalMovies}</p>
           </div>
         </div>
 
-        {/* USERS CARD */}
+        
         <div className="cards">
           <div className="cards-inner">
             <h3>
               <span>
                 <i className="fa-solid fa-user"></i>
-              </span>{" "}
+              </span>
               Number of Users
             </h3>
             <p>{counts.totalUsers}</p>
           </div>
         </div>
 
-        {/* SUBSCRIPTIONS CARD */}
+       
         <div className="cards">
           <div className="cards-inner">
             <h3>
               <span>
                 <i className="fa-solid fa-credit-card"></i>
-              </span>{" "}
+              </span>
               Number of Subscriptions
             </h3>
             <p>{counts.totalSubscriptions}</p>
@@ -74,7 +74,7 @@ function Cards() {
         </div>
       </div>
 
-      {/* CHARTS SECTION */}
+      
       <div className="charts">
         <Charts />
       </div>

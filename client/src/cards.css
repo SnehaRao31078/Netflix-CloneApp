@@ -1,6 +1,4 @@
-/* ===========================
-   MAIN DASHBOARD CONTAINER
-=========================== */
+
 .main-container {
   grid-area: main;
   overflow-y: auto;
@@ -11,9 +9,6 @@
   font-family: Arial, sans-serif;
 }
 
-/* ===========================
-   DASHBOARD TITLE
-=========================== */
 .main-title {
   margin-bottom: 30px;
 }
@@ -26,18 +21,14 @@
   text-transform: uppercase;
 }
 
-/* ===========================
-   TOP CARDS GRID
-=========================== */
+
 .main-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
-/* ===========================
-   SUMMARY CARDS
-=========================== */
+
 .cards {
   display: flex;
   align-items: center;
@@ -56,7 +47,7 @@
   box-shadow: 0 10px 30px rgba(229, 9, 20, 0.35);
 }
 
-/* Netflix style card gradients */
+
 .cards:first-child {
   background: linear-gradient(135deg, #ff9800, #ff5722);
 }
@@ -69,9 +60,7 @@
   background: linear-gradient(135deg, #e50914, #8b0000);
 }
 
-/* ===========================
-   CARD INNER LAYOUT
-=========================== */
+
 .cards-inner {
   display: flex;
   justify-content: space-between;
@@ -94,20 +83,16 @@
   margin: 0;
 }
 
-/* ICONS */
 .cards i {
   font-size: 28px;
 }
 
-/* ===========================
-   CHART SECTION
-=========================== */
 .charts {
   margin-top: 50px;
   width: 100%;
 }
 
-/* Charts Row */
+
 .dashboard-charts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -115,7 +100,6 @@
   width: 100%;
 }
 
-/* Individual Chart Box */
 .chart-box {
   min-height: 420px;
   height: auto;
@@ -134,7 +118,7 @@
   box-shadow: 0 10px 25px rgba(229, 9, 20, 0.25);
 }
 
-/* Chart Titles */
+
 .head {
   color: black;
   text-align: center;
@@ -143,9 +127,7 @@
   font-weight: bold;
 }
 
-/* ===========================
-   SCROLLBAR
-=========================== */
+
 .main-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -155,9 +137,7 @@
 }
 
 
-/* ===========================
-   RESPONSIVE DESIGN
-=========================== */
+
 @media screen and (max-width: 1200px) {
   .main-cards {
     grid-template-columns: 1fr;
