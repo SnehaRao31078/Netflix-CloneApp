@@ -117,12 +117,16 @@
 
 /* Individual Chart Box */
 .chart-box {
-  background: whitesmoke;
-  border-radius: 18px;
-  padding: 20px;
-  height: 420px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
+  min-height: 420px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  padding-bottom: 30px;
+}
+.chart-box canvas {
+  max-height: 300px !important;
 }
 
 .chart-box:hover {
