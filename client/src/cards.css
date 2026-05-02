@@ -1,4 +1,6 @@
-/* MAIN CONTAINER */
+/* ===========================
+   MAIN DASHBOARD CONTAINER
+=========================== */
 .main-container {
   grid-area: main;
   overflow-y: auto;
@@ -9,61 +11,67 @@
   font-family: Arial, sans-serif;
 }
 
-/* TITLE */
+/* ===========================
+   DASHBOARD TITLE
+=========================== */
 .main-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 30px;
 }
 
 .main-title h3 {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: bold;
   color: #e50914;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-/* TOP CARDS GRID */
+/* ===========================
+   TOP CARDS GRID
+=========================== */
 .main-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
-/* CARD STYLING */
+/* ===========================
+   SUMMARY CARDS
+=========================== */
 .cards {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 25px;
-  border-radius: 15px;
-  min-height: 140px;
+  border-radius: 18px;
+  min-height: 150px;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
 
 .cards:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.35);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(229, 9, 20, 0.35);
 }
 
-/* CARD COLORS */
+/* Netflix style card gradients */
 .cards:first-child {
   background: linear-gradient(135deg, #ff9800, #ff5722);
 }
 
 .cards:nth-child(2) {
-  background: linear-gradient(135deg, #1f80e0, #0b4f9c);
+  background: linear-gradient(135deg, #0071eb, #003c8f);
 }
 
 .cards:nth-child(3) {
-  background: linear-gradient(135deg, #e50914, #b20710);
+  background: linear-gradient(135deg, #e50914, #8b0000);
 }
 
-/* INNER CARD */
+/* ===========================
+   CARD INNER LAYOUT
+=========================== */
 .cards-inner {
   display: flex;
   justify-content: space-between;
@@ -72,32 +80,68 @@
 }
 
 .cards h3 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  line-height: 1.4;
 }
 
 .cards p {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: bold;
+  margin: 0;
 }
 
 /* ICONS */
 .cards i {
-  font-size: 24px;
+  font-size: 28px;
 }
 
-/* CHARTS SECTION */
+/* ===========================
+   CHART SECTION
+=========================== */
 .charts {
-  grid-column: 1 / -1;
+  margin-top: 50px;
   width: 100%;
-  margin-top: 40px;
-  background: transparent;
 }
 
-/* SCROLLBAR */
+/* Charts Row */
+.dashboard-charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  width: 100%;
+}
+
+/* Individual Chart Box */
+.chart-box {
+  background: #181818;
+  border-radius: 18px;
+  padding: 20px;
+  height: 420px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.chart-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(229, 9, 20, 0.25);
+}
+
+/* Chart Titles */
+.head {
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
 .main-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -106,16 +150,21 @@
   background: #111;
 }
 
+.main-container::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 10px;
+}
 
-
-
+/* ===========================
+   RESPONSIVE DESIGN
+=========================== */
 @media screen and (max-width: 1200px) {
   .main-cards {
     grid-template-columns: 1fr;
   }
 
-  .cards {
-    min-height: 120px;
+  .dashboard-charts {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -125,7 +174,7 @@
   }
 
   .main-title h3 {
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .cards h3 {
@@ -133,10 +182,14 @@
   }
 
   .cards p {
-    font-size: 28px;
+    font-size: 30px;
   }
-}
-.head
-{
-  color:black;
+
+  .chart-box {
+    height: 380px;
+  }
+
+  .head {
+    font-size: 20px;
+  }
 }
