@@ -2,7 +2,7 @@ import "./cards.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Charts from "./Charts";
-import CountryChart from "./CountryChart";
+
 function Cards() {
   const [counts, setCounts] = useState({
     totalUsers: 0,
@@ -13,7 +13,9 @@ function Cards() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard-counts`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/dashboard-counts`
+        );
         setCounts(res.data);
       } catch (err) {
         console.log(err);
@@ -22,39 +24,62 @@ function Cards() {
 
     fetchCounts();
   }, []);
+
   return (
     <main className="main-container">
+      {/* DASHBOARD TITLE */}
       <div className="main-title">
         <h3>DASHBOARD</h3>
       </div>
+
+      {/* TOP SUMMARY CARDS */}
       <div className="main-cards">
-        <div className="cards">
-        <div className="cards-inner">
-        <h3> <span><i className="fa-solid fa-film"></i></span> Number of Movies</h3>
-        <p>{counts.totalMovies}</p>
-        </div>
-        </div>
-        
-        <div className="cards">
-        <div className="cards-inner">
-            <h3><span><i className="fa-solid fa-user"></i></span> Number of users </h3>
-           <p>{counts.totalUsers}</p>
-        </div>
-
-        </div>
-
+        {/* MOVIES CARD */}
         <div className="cards">
           <div className="cards-inner">
-            <h3><span><i className="fa-solid fa-credit-card"></i></span> Number of subscription</h3>
+            <h3>
+              <span>
+                <i className="fa-solid fa-film"></i>
+              </span>{" "}
+              Number of Movies
+            </h3>
+            <p>{counts.totalMovies}</p>
+          </div>
+        </div>
+
+        {/* USERS CARD */}
+        <div className="cards">
+          <div className="cards-inner">
+            <h3>
+              <span>
+                <i className="fa-solid fa-user"></i>
+              </span>{" "}
+              Number of Users
+            </h3>
+            <p>{counts.totalUsers}</p>
+          </div>
+        </div>
+
+        {/* SUBSCRIPTIONS CARD */}
+        <div className="cards">
+          <div className="cards-inner">
+            <h3>
+              <span>
+                <i className="fa-solid fa-credit-card"></i>
+              </span>{" "}
+              Number of Subscriptions
+            </h3>
             <p>{counts.totalSubscriptions}</p>
           </div>
         </div>
-     <div className="charts">
-      <Charts />
-     </div>
-     
+      </div>
+
+      {/* CHARTS SECTION */}
+      <div className="charts">
+        <Charts />
       </div>
     </main>
   );
 }
+
 export default Cards;
