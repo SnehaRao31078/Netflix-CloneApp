@@ -55,22 +55,22 @@ function Charts() {
 
         // BAR CHART DATA
         setPriceData([
-          {
-            name: "Basic",
-            price: prices.basic,
-            subscribers: basic,
-          },
-          {
-            name: "Standard",
-            price: prices.standard,
-            subscribers: standard,
-          },
-          {
-            name: "Premium",
-            price: prices.premium,
-            subscribers: premium,
-          },
-        ]);
+  {
+    name: "Basic",
+    price: basic > 0 ? prices.basic : 199,
+    subscribers: basic,
+  },
+  {
+    name: "Standard",
+    price: standard > 0 ? prices.standard : 499,
+    subscribers: standard,
+  },
+  {
+    name: "Premium",
+    price: premium > 0 ? prices.premium : 799, // ✅ FIX
+    subscribers: premium,
+  },
+]);
 
         // REVENUE LINE CHART DATA
         setRevenueData([
