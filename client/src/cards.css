@@ -150,10 +150,6 @@
   background: #111;
 }
 
-.main-container::-webkit-scrollbar-thumb {
-  background: #e50914;
-  border-radius: 10px;
-}
 
 /* ===========================
    RESPONSIVE DESIGN
