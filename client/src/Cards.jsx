@@ -52,9 +52,7 @@ function Cards() {
      <div className="charts">
       <Charts />
      </div>
-     <div className="charts">
-      <CountryChart />
-     </div>
+     
       </div>
     </main>
   );
