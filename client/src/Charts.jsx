@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   PieChart,
   Pie,
@@ -6,72 +7,170 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  LineChart,
+  Line,
 } from "recharts";
-import axios from "axios";
 
 function Charts() {
-  const [data, setData] = useState([]);
+  const [planData, setPlanData] = useState([]);
+  const [priceData, setPriceData] = useState([]);
+  const [revenueData, setRevenueData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlans = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/plans`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/plans`
+        );
 
         let basic = 0;
         let standard = 0;
         let premium = 0;
 
+        const prices = {
+          basic: 199,
+          standard: 499,
+          premium: 649,
+        };
+
         res.data.forEach((item) => {
-          if (item.plan.toLowerCase() === "basic") basic++;
-          else if (item.plan.toLowerCase() === "standard") standard++;
-          else if (item.plan.toLowerCase() === "premium") premium++;
+          const plan = item.plan.toLowerCase();
+
+          if (plan === "basic") basic++;
+          else if (plan === "standard") standard++;
+          else if (plan === "premium") premium++;
         });
 
-        setData([
+        // PIE CHART DATA
+        setPlanData([
           { name: "Basic", value: basic },
           { name: "Standard", value: standard },
           { name: "Premium", value: premium },
         ]);
+
+        // BAR CHART DATA
+        setPriceData([
+          {
+            name: "Basic",
+            price: prices.basic,
+            subscribers: basic,
+          },
+          {
+            name: "Standard",
+            price: prices.standard,
+            subscribers: standard,
+          },
+          {
+            name: "Premium",
+            price: prices.premium,
+            subscribers: premium,
+          },
+        ]);
+
+        // REVENUE LINE CHART DATA
+        setRevenueData([
+          {
+            name: "Basic",
+            revenue: basic * prices.basic,
+          },
+          {
+            name: "Standard",
+            revenue: standard * prices.standard,
+          },
+          {
+            name: "Premium",
+            revenue: premium * prices.premium,
+          },
+        ]);
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error("Error fetching plans", error);
       }
     };
 
-    fetchData();
+    fetchPlans();
   }, []);
 
-  const COLORS = ["#0088FE", "#00C49F", "#FF8828"];
+  const COLORS = ["#E50914", "#0071EB", "#FFA500"];
 
   return (
-    <div style={{ width: "100%", height: 450 }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            cx="50%"
-            cy="45%"
-            outerRadius={100}
-            label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
+    <div className="dashboard-charts">
+      {/* PIE CHART */}
+      <div className="chart-box">
+        <h2 className="head">Plan Distribution</h2>
+        <ResponsiveContainer width="100%" height="90%">
+          <PieChart>
+            <Pie
+              data={planData}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label={({ percent }) =>
+                `${(percent * 100).toFixed(0)}%`
+              }
+            >
+              {planData.map((entry, index) => (
+                <Cell
+                  key={index}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
 
-          <Tooltip />
+      {/* BAR CHART */}
+      <div className="chart-box">
+        <h2 className="head">Plan Price vs Subscribers</h2>
+        <ResponsiveContainer width="100%" height="90%">
+          <BarChart data={priceData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="price"
+              fill="#0071EB"
+              name="Price (₹)"
+            />
+            <Bar
+              dataKey="subscribers"
+              fill="#00C853"
+              name="Subscribers"
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-      
-          <Legend
-            verticalAlign="right"
-            align="center"
-            iconType="square"
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      {/* LINE CHART */}
+      <div className="chart-box">
+        <h2 className="head">Revenue Generated by Plans</h2>
+        <ResponsiveContainer width="100%" height="90%">
+          <LineChart data={revenueData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="revenue"
+              stroke="#E50914"
+              strokeWidth={3}
+              name="Revenue (₹)"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
