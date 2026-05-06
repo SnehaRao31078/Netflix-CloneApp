@@ -1,4 +1,4 @@
-body {
+/*body {
   margin: 0;
   background: black;
   font-family: Arial;
@@ -42,4 +42,102 @@ body {
 button a {
   color: white;
   text-decoration: none;
+}*/
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #141414, #000000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass effect card */
+.box {
+  width: 380px;
+  padding: 40px;
+  border-radius: 12px;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+}
+
+/* Title */
+.box h2 {
+  color: white;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* Input fields */
+.box input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 15px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #1c1c1c;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Input focus glow */
+.box input:focus {
+  border: 1px solid red;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+/* Placeholder */
+.box input::placeholder {
+  color: #aaa;
+}
+
+/* Button */
+.box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 25px;
+  background: linear-gradient(45deg, #e50914, #ff3c3c);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Button hover effect */
+.box button:hover {
+  background: linear-gradient(45deg, #ff3c3c, #e50914);
+  transform: scale(1.03);
+}
+
+/* Button click */
+.box button:active {
+  transform: scale(0.97);
+}
+
+/* Small text (optional login link) */
+.box p {
+  color: #bbb;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.box a {
+  color: red;
+  text-decoration: none;
+}
+
+.box a:hover {
+  text-decoration: underline;
 }
