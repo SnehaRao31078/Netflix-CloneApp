@@ -15,7 +15,9 @@ function Adminlog() {
         e.preventDefault();
         if(email===ADMIN_EMAIL && password===ADMIN_PASS)
         {
+          toast.success("Logged in successfully");
               navigate("/admindash");
+              
         }
         else{
             toast.error("Incorrect login credentials");
