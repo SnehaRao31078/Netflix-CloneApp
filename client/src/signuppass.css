@@ -50,7 +50,7 @@ body {
   background: black;
 }
 
-/* Background overlay like Netflix */
+
 body::before {
   content: "";
   position: fixed;
@@ -61,7 +61,7 @@ body::before {
   z-index: -1;
 }
 
-/* Center box */
+
 .box {
   width: 400px;
   padding: 60px 50px;
@@ -71,7 +71,7 @@ body::before {
   border-radius: 4px;
 }
 
-/* Title */
+
 .box h2 {
   color: white;
   font-size: 32px;
@@ -79,7 +79,7 @@ body::before {
   text-align: left;
 }
 
-/* Inputs */
+
 .box input {
   width: 100%;
   padding: 16px;
@@ -92,12 +92,12 @@ body::before {
   outline: none;
 }
 
-/* Input focus */
+
 .box input:focus {
   background: #444;
 }
 
-/* Button */
+
 .box button {
   width: 100%;
   padding: 16px;
@@ -111,19 +111,19 @@ body::before {
   font-weight: bold;
 }
 
-/* Button hover */
+
 .box button:hover {
   background: #f6121d;
 }
 
-/* Extra text */
+
 .box p {
   color: #737373;
   margin-top: 20px;
   font-size: 14px;
 }
 
-/* Link */
+
 .box a {
   color: white;
   text-decoration: none;
@@ -134,7 +134,7 @@ body::before {
   text-decoration: underline;
 }
 
-/* Responsive */
+
 @media (max-width: 500px) {
   .box {
     width: 90%;
