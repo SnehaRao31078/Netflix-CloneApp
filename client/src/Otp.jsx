@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {toast} from "react-toastify";
+import {toast} from react-toastify
 import "./otp.css";
 function Otp() {
   const [otp, setOtp] = useState("");
@@ -23,7 +23,7 @@ function Otp() {
             navigate("/subscribe");
           }
         } else {
-         toast.error (res.data.status);
+          (res.data.status);
         }
       })
       .catch((err) => console.log(err));

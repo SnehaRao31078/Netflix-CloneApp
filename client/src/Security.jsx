@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./security.css";
-import {toast} from "react-tostify";
+import {toast} from "react-toastify";
 function Security() {
   
 const [email, setEmail] = useState("");
