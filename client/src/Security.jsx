@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./security.css";
-
+import {toast} from "react-tostify";
 function Security() {
   
 const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ const [email, setEmail] = useState("");
         newPassword,
       });
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
 
       if (newEmail) {
@@ -45,7 +45,7 @@ const [email, setEmail] = useState("");
 
     } catch (err) {
       console.log(err);
-      alert("Error updating user");
+      toast.error("Error updating user");
     }
   };
   return (

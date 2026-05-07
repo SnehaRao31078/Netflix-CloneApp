@@ -2,6 +2,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./plan.css";
+import {toast} from "react-toastify";
 function Plan() {
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -45,10 +46,10 @@ function Plan() {
           );
 
           if (verifyRes.data.success) {
-            alert("Payment Successful");
+            toast.success("Payment Successful");
             navigate("/home");
           } else {
-            alert("Payment Failed");
+            toast.error("Payment Failed");
           }
         },
 
