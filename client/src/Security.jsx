@@ -20,7 +20,7 @@ const [email, setEmail] = useState("");
 
    
     if (!newEmail && !newPassword) {
-      alert("Enter something to update");
+      toast.error("Enter something to update");
       return;
     }
 

@@ -1,56 +1,3 @@
-/*body {
-  font-family: Arial;
-  
-}
-.view
-{
-  background-color: black;
-}
-h2 {
-  margin-left: 20px;
-  color:white;
-}
-
-table {
-  width: 70%;
-  margin: 20px auto;  
-  border: 2px solid black;    
-}
-th 
-{border: 1px solid white;
-  padding: 8px;
-  color:black;
-
-}
-td {
-  border: 1px solid white;
-  padding: 8px;
-  color:white;
-}
-
-th {
-  background-color: lightgray;
-}
-.up
-{
-   background-color:green;
-}
-.del
-{
-    background-color: red;
-}
-img{
-  height:80px;
-}
-td button {
-  display: inline;   
-  margin-right: 5px;
-}
-a{
-text-decoration:none;
-}*/
-
-/* Font */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
 * {
@@ -65,28 +12,28 @@ body {
   color: white;
 }
 
-/* Main container */
+
 .view {
   min-height: 100vh;
   padding: 40px;
   background: #141414;
 }
 
-/* Heading */
+
 h2 {
   text-align: center;
   font-size: 34px;
   margin-bottom: 30px;
-  color: white; /* Netflix red */
+  color: white; 
   letter-spacing: 2px;
 }
 
-/* Table container */
+
 .table-container {
   overflow-x: auto;
 }
 
-/* Table */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -96,7 +43,7 @@ table {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* Header */
+
 th {
   background: #000;
   color: whitesmoke;
@@ -107,7 +54,7 @@ th {
   border-bottom: 1px solid #333;
 }
 
-/* Rows */
+
 td {
   padding: 14px;
   text-align: center;
@@ -115,7 +62,7 @@ td {
   transition: all 0.3s ease;
 }
 
-/* Row hover */
+
 tbody tr {
   transition: transform 0.3s ease, background 0.3s ease;
 }
@@ -125,7 +72,7 @@ tbody tr:hover {
   transform: scale(1.01);
 }
 
-/* Image */
+
 img {
   height: 80px;
   border-radius: 8px;
@@ -136,7 +83,7 @@ img:hover {
   transform: scale(1.1);
 }
 
-/* Video */
+
 video {
   border-radius: 10px;
   transition: transform 0.3s ease;
@@ -146,7 +93,7 @@ video:hover {
   transform: scale(1.05);
 }
 
-/* Buttons */
+
 td button {
   padding: 8px 16px;
   border: none;
@@ -156,7 +103,7 @@ td button {
   transition: all 0.3s ease;
 }
 
-/* Edit button */
+
 .up {
   background: #333;
   color: #0f0;
@@ -168,7 +115,7 @@ td button {
   transform: scale(1.1);
 }
 
-/* Delete button */
+
 .del {
   background: #333;
   color: #e50914;
@@ -180,13 +127,12 @@ td button {
   transform: scale(1.1);
 }
 
-/* Plan badge */
 td:nth-child(7) {
   font-weight: 500;
   color: #ffd700;
 }
 
-/* Scrollbar (Netflix style) */
+
 ::-webkit-scrollbar {
   height: 8px;
 }
@@ -197,7 +143,7 @@ td:nth-child(7) {
 
 
 
-/* Responsive */
+
 @media (max-width: 768px) {
   th, td {
     font-size: 12px;
