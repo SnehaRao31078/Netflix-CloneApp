@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./view.css";
 import { Link } from "react-router-dom";
-
+import {toast} from "react-toastify";
 function ViewProducts() {
   const [movies, setMovies] = useState([]);
 
@@ -19,7 +19,7 @@ function ViewProducts() {
     axios
       .delete(`${import.meta.env.VITE_API_URL}/products/${id}`)
       .then(() => {
-        alert("Deleted successfully");
+        toast.success("Deleted successfully");
 
         
         setMovies(movies.filter((movie) => movie._id !== id));
