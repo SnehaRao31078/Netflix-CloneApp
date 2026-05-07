@@ -18,7 +18,7 @@ function Nav() {
     localStorage.removeItem("userEmail");
 
     navigate("/");
-    alert("You are  logged out successfully");
+    toast.success("You are  logged out successfully");
   };
 
   const [value, setValue] = useState("");
